@@ -1,0 +1,155 @@
+
+.sign-flow .view .input-wrapper, .sign-flow .view .button-wrapper, .sign-flow .view .signin-misc-wrapper, .sign-flow .view .other-signup-wrapper {
+    margin-top: 18px;
+}
+
+#Particles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 99.56%;
+}
+
+.index-main{
+    text-align: center;
+    white-space: nowrap;
+    height: 100%;
+    min-height: 720px;
+    overflow: hidden;
+}
+
+.index-main:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -.25em;
+}
+
+.index-header{
+    text-align: center;
+}
+
+.index-header .logo {
+    margin: 0 auto;
+    width: 200px;
+    height: 90px;
+    background: url(/assets/image/LOGO.png) no-repeat center;
+    background-size: contain;
+}
+
+.index-header .subtitle {
+    margin: 30px 0 20px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.index-main-body{
+    padding: 0;
+    min-height: 590px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    white-space: normal;
+    margin: auto;
+    width:300px;
+}
+
+.sign-flow {
+    text-align: center;
+}
+
+.index-tab-navs {
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.sign-flow .view {
+    float: none;
+    margin: auto;
+    width: 300px;
+    text-align: left;
+}
+
+.sign-flow .view .group-inputs {
+    padding: 1px 0;
+    border: 1px solid #d5d5d5;
+    border-radius: 3px;
+}
+
+.sign-flow .view .input-wrapper {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+}
+
+.sign-flow .view .input-wrapper input {
+    padding: 1em .8em;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.sign-flow .view .input-wrapper input, .sign-flow .view .input-wrapper input:focus {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff;
+}
+.sign-flow .view .input-wrapper input:focus {
+    background: #fff;
+    outline: 0;
+}
+
+.sign-flow .sign-button {
+    background: #0f88eb;
+    box-shadow: none;
+    border: 0;
+    border-radius: 3px;
+    line-height: 41px;
+    color: #fff;
+}
+
+.sign-button {
+    display: block;
+    padding: 0;
+    width: 100%;
+    font-size: 15px;
+    line-height: 33px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    background: #80c3f7;
+    background: -webkit-linear-gradient(top,#80c3f7,#6bbaf8);
+    background: linear-gradient(to bottom,#80c3f7,#6bbaf8);
+    border: 1px solid #1D80CF;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 1px 1px rgba(50,50,50,.05);
+    outline: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.footer{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    font-size: 12px;
+    line-height: 21px;
+    text-align: center;
+}
+.footer span, .footer a {
+    color: #aebdc9;
+}
+.footer .dot{
+    margin: 0 3px;
+}
+
+
+
+

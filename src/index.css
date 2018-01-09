@@ -3,3 +3,32 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.login .sign-flow .ant-tabs-nav-container {
+  font-size: 18px;
+}
+
+.login .sign-flow .ant-tabs-ink-bar{
+  width: 56px !important;
+}
+
+.login .sign-flow .ant-tabs-bar {
+  border-bottom: none !important;
+}
+
+.login .sign-flow .ant-tabs-nav .ant-tabs-tab{
+  padding:8px 10px;
+}
+
+.login .sign-flow .ant-tabs-top .ant-tabs-ink-bar-animated,
+.login .sign-flow .ant-tabs-bottom .ant-tabs-ink-bar-animated {
+  transition: transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
