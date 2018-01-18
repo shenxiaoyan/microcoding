@@ -41,7 +41,7 @@ export default class Login extends Component {
                     <div className="index-main-body">
                         <div className="index-header">
                             <h1 className="logo hide-text">微Coding</h1>
-                            <h2 className="subtitle">分享你的coding经验和见解哈哈</h2>
+                            <h2 className="subtitle">分享你的coding经验和见解</h2>
                         </div>
                         <div className="desk-front sign-flow clearfix sign-flow-simple">
                             <Tabs defaultActiveKey="1" onChange={this.tabChange}>
