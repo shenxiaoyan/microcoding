@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+#root{
+  height: 100%;
+}
+
 .hide-text {
   font: 0/0 a;
   color: transparent;

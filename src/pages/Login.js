@@ -2,17 +2,28 @@ import React, {Component} from 'react';
 import 'particles.js/particles';
 import "../style/login.css"
 import {Tabs} from 'antd';
+import {connect} from "react-redux";
+import {login, register} from "../reducers/user.redux";
 
 
 const particlesJS = window.particlesJS;
 const TabPane = Tabs.TabPane;
 
+@connect(
+    state => state.user,
+    {login,register}
+)
 export default class Login extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            activeTab: '1'
+            activeTab: '1',
+            account: '',
+            password: '',   // 登录的密码
+            email: '',
+            pwd: '',    // 注册的密码
+            pwd1: ''    // 注册重复输的密码
         }
     }
 
@@ -27,14 +38,71 @@ export default class Login extends Component {
         });
     }
 
+    handlerChange(key, val) {
+        this.setState({
+            [key]: val
+        })
+    }
+
+    handleLogin = () => {
+        this.props.login(this.state)
+    }
+
+
     tabChange = (key) => {
-        console.log(key)
         this.setState({
             activeTab: key
         })
     }
 
     render() {
+
+        // 注册模板
+        let registerTemplate = <div className="sign-up">
+            <div className="group-inputs">
+                <div className="name input-wrapper">
+                    <input type="text" name="email" placeholder="邮箱号"
+                           onChange={v => this.handlerChange("email", v.target.value)}/>
+                </div>
+                <div className="email input-wrapper">
+                    <input type="password" name="rpassword" placeholder="密码(不少于6位)"
+                           onChange={v => this.handlerChange("pwd", v.target.value)}/>
+                </div>
+                <div className="input-wrapper">
+                    <input type="password" name="rpassword1" placeholder="确认密码"
+                           onChange={v => this.handlerChange("pwd1", v.target.value)}/>
+                </div>
+            </div>
+            <div className="button-wrapper command">
+                <button className="sign-button submit" onClick={()=>this.props.register(this.state)}>
+                    注册微Coding
+                </button>
+                <div className="spin-modal-mask">
+                </div>
+            </div>
+        </div>;
+
+        // 登录模板
+        let loginTemplate = <div className="sign-in">
+            <div className="group-inputs">
+                <div className="email input-wrapper">
+                    <input type="text" name="account" placeholder="邮箱或昵称"
+                           onChange={v => this.handlerChange("account", v.target.value)}/>
+                </div>
+                <div className="input-wrapper">
+                    <input type="password" name="lpassword" autoComplete="off"
+                           placeholder="密码"
+                           onChange={v => this.handlerChange("password", v.target.value)}/>
+                </div>
+            </div>
+            <div className="button-wrapper command">
+                <button className="sign-button submit"
+                        onClick={this.handleLogin}>
+                    登录
+                </button>
+            </div>
+        </div>
+
         return (
             <div>
                 <div className="index-main login">
@@ -49,43 +117,7 @@ export default class Login extends Component {
                                 <TabPane tab="登录" key="2"/>
                             </Tabs>
                             <div className="view">
-                                {this.state.activeTab === 1 ? <div className="sign-up">
-                                    <div className="group-inputs">
-                                        <div className="name input-wrapper">
-                                            <input type="text" name="name" placeholder="昵称"/>
-                                        </div>
-                                        <div className="email input-wrapper">
-                                            <input type="text" name="email" placeholder="邮箱号"/>
-                                        </div>
-                                        <div className="input-wrapper">
-                                            <input type="password" name="password" placeholder="密码(不少于6位)"/>
-                                        </div>
-                                    </div>
-                                    <div className="button-wrapper command">
-                                        <button className="sign-button submit">
-                                            注册微Coding
-                                        </button>
-                                        <div className="spin-modal-mask">
-                                        </div>
-                                    </div>
-                                </div> : <div className="sign-in">
-                                    <div className="group-inputs">
-                                        <div className="email input-wrapper">
-                                            <input type="text" name="email1" placeholder="邮箱"/>
-                                        </div>
-                                        <div className="input-wrapper">
-                                            <input type="password" name="password1" autoComplete="off"
-                                                   placeholder="密码"/>
-                                        </div>
-                                    </div>
-                                    <div className="button-wrapper command">
-                                        <button className="sign-button submit">
-                                            登录
-                                        </button>
-                                    </div>
-                                </div>}
-
-
+                                {this.state.activeTab === "1" ? registerTemplate : loginTemplate}
                             </div>
                         </div>
                     </div>
