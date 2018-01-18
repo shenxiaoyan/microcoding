@@ -7,7 +7,7 @@
 /coverage
 
 # production
-#/build   服务器需要
+/build
 
 # misc
 .DS_Store
