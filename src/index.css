@@ -2,11 +2,13 @@
 * {
     box-sizing: border-box;
 }
+
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
+
 html, body {
     margin: 0;
     padding: 0;
@@ -72,6 +74,10 @@ button, input, select, textarea {
 
 .login .sign-flow .ant-tabs-nav .ant-tabs-tab {
     padding: 8px 10px;
+}
+
+.login .ant-tabs-nav .ant-tabs-tab:nth-child(3) {
+    margin-right: 32px;
 }
 
 .login .sign-flow .ant-tabs-top .ant-tabs-ink-bar-animated,
