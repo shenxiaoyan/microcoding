@@ -1,38 +1,80 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+/*----------------全局样式-------------------*/
+* {
+    box-sizing: border-box;
+}
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-family: -apple-system, PingFang SC, Hiragino Sans GB, Arial, Microsoft YaHei, Helvetica Neue, sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+    text-rendering: optimizeLegibility;
 }
 
-#root{
-  height: 100%;
+button, input {
+    overflow: visible;
+}
+
+button, input, select, textarea {
+    font: inherit;
+    margin: 0;
+}
+
+#root {
+    height: 100%;
 }
 
 .hide-text {
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
 }
+
+.header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 1.4rem;
+    height: 5.334rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    z-index: 100;
+}
+
+/*------------------------第三方插件样式修改--------------------------*/
 
 .login .sign-flow .ant-tabs-nav-container {
-  font-size: 18px;
+    font-size: 18px;
 }
 
-.login .sign-flow .ant-tabs-ink-bar{
-  width: 56px !important;
+.login .sign-flow .ant-tabs-ink-bar {
+    width: 56px !important;
 }
 
 .login .sign-flow .ant-tabs-bar {
-  border-bottom: none !important;
+    border-bottom: none !important;
 }
 
-.login .sign-flow .ant-tabs-nav .ant-tabs-tab{
-  padding:8px 10px;
+.login .sign-flow .ant-tabs-nav .ant-tabs-tab {
+    padding: 8px 10px;
 }
 
 .login .sign-flow .ant-tabs-top .ant-tabs-ink-bar-animated,
 .login .sign-flow .ant-tabs-bottom .ant-tabs-ink-bar-animated {
-  transition: transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }

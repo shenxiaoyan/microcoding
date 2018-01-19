@@ -1,4 +1,4 @@
-import {host} from "../config";
+import {host} from "../common/config";
 import axios from "axios";
 
 const LOGIN_SUCESS = "LOGIN_SUCCESS"

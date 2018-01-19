@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
 import './App.css';
-import Login from './pages/Login';
-import {Route} from "react-router-dom";
+import {routes, RouteWithSubRoutes} from "./common/router";
+import {Redirect, Route, Switch} from "react-router-dom";
+
 
 class App extends Component {
 
     render() {
         return (
             <div className="App">
-                <Route path={`/login`} component={Login} />
+                <Switch>
+                    {/*路由配置*/}
+                    {routes.map((route, i) => (
+                        <RouteWithSubRoutes key={i} {...route}/>
+                    ))}
+                </Switch>
             </div>
         );
     }
