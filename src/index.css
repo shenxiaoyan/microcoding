@@ -19,6 +19,10 @@ html, body {
     text-rendering: optimizeLegibility;
 }
 
+*::before, *::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 button, input {
     overflow: visible;
 }

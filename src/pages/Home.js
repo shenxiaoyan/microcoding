@@ -2,9 +2,37 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import "../style/home.css"
 import CommonUtils from "../utils/commonUtils";
+import {Tooltip} from "antd";
 
 // 首页
 export default class Home extends Component {
+
+    slideItems = [
+        {
+            path: "/mine",
+            icon: "icon-book-dairy-note-write-tag-mark-important-office-log-stationery-fef",
+            text: "我的",
+            show: true
+        },
+        {
+            path: "/login",
+            icon: "icon-denglu",
+            text: "登录注册",
+            show: true
+        },
+        {
+            path: "/editor",
+            icon: "icon-xiezuo",
+            text: "Write ...",
+            show: true
+        },
+        {
+            path: "/logOut",
+            icon: "icon-tuichu",
+            text: "退出登录",
+            show: true
+        }
+    ]
 
     constructor(props) {
         super(props)
@@ -57,7 +85,7 @@ export default class Home extends Component {
                             <div className="search-bar-tool-wrapper">
                                 <form className="search-bar-tool">
                                     <div
-                                        className={`search-bar-input input-wrapper input-wrapper--grey ${this.state.isFocus ? "is-focus" : ""}`}
+                                        className={`search-bar-input input-wrapper-search input-wrapper--grey ${this.state.isFocus ? "is-focus" : ""}`}
                                     >
                                         <input type="text" autoComplete="off" placeholder="搜索" className="Input"
                                                onFocus={(e) => this.handleFocus(e)}
@@ -72,7 +100,25 @@ export default class Home extends Component {
                         </div>
                     </div>
                 </header>
-                <aside></aside>
+                <aside className="aside">
+                    <div id="slideBar" className="slide-bar">
+                        <div className="menu">
+                            <ul>
+                                {this.slideItems.map((item, i) => {
+                                    return (
+                                        <li key={i} onClick={(e) => CommonUtils.stopBubble(e)}>
+                                            <Tooltip title={item.text} placement={"left"}>
+                                                <Link to={item.path}>
+                                                    <i className={`tab-ico icon iconfont ${item.icon}`}/>
+                                                </Link>
+                                            </Tooltip>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
             </div>
         )
     }
