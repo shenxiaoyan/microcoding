@@ -11,3 +11,130 @@
     flex: 1 1 auto;
     height: 100%;
 }
+
+.with-margin {
+    margin-right: 30px;
+}
+
+.status-text {
+    font-size: 1.334rem;
+    white-space: nowrap;
+    color: #ddd;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.status-text a {
+    margin: 0 .2em;
+    padding: .2em .8em;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.status-text a:hover {
+    color: #ccc;
+}
+
+.with-padding {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+}
+
+.publish {
+    margin-left: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.publish-button {
+    width: 82px;
+    height: 32px;
+    line-height: 30px;
+    padding: 0;
+}
+
+.publish-button .icon {
+    margin-right: -5px;
+    margin-left: 5px;
+    pointer-events: none;
+}
+
+.main {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    top: 5.334rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.editor-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #36312C;
+    color: #EBD1B7;
+    padding: 10px 25px;
+}
+
+.editor-box textarea {
+    min-height: 500px;
+    padding: 20px;
+    position: fixed;
+    top: 57px;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    overflow: auto;
+    box-shadow: -10px 2px 6px 10px rgba(0, 0, 0, 0.4);
+    height: 100%;
+}
+
+.content-preview,
+.editor {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 50%;
+    flex: 1 1 50%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content-preview {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /*background-color: #f7f7f7;*/
+    background-color: #fff;
+    border-left: 1px solid #ddd;
+    padding: 30px 20px;
+    line-height: 1.5em;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 980px;
+
+}
+
+.content-preview img,
+.content-preview video {
+    max-width: 100%;
+    max-height: 668px;
+    margin: 2em auto;
+    text-align: center;
+}

@@ -1,0 +1,50 @@
+.make .cm-header {
+    color: #F8BB39 !important;
+    font-weight: 600;
+}
+
+.make .cm-header-1{
+    font-size: 1.7em;
+}
+
+.make .cm-header-2{
+    font-size: 1.4em;
+}
+.make .cm-header-2{
+    font-size: 1.2em;
+}
+
+.make .cm-strong {
+    color: #DB784D;
+    font-size: 16px;
+}
+
+.make .cm-comment {
+    color: #95CC5E;
+    font: normal .9em "Source Code Pro", monospace;
+}
+
+.make .cm-link {
+    color: rgba(139, 158, 177, 0.8);
+    font-size: 15px;
+}
+
+.make .cm-quote {
+    color: #DB784D;
+}
+
+.make .cm-link.cm-quote{
+    color: #F8BB39
+}
+
+.make .cm-url.cm-quote {
+    color: rgba(139, 158, 177, 0.8);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.make .cm-url.cm-variable-2{
+    color: rgba(139, 158, 177, 0.8);
+}
+

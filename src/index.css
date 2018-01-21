@@ -28,6 +28,23 @@ button, input, select, textarea {
     margin: 0;
 }
 
+/*
+  清除浮动
+*/
+.clearfix:before, .clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix:before, .clearfix:after {
+    display: table;
+    content: "";
+}
+
 #root {
     height: 100%;
 }
@@ -58,8 +75,81 @@ button, input, select, textarea {
     z-index: 100;
 }
 
+.right-box {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.Input {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 0;
+    overflow: hidden;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+.Button {
+    color: gray;
+    display: inline-block;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 32px;
+    color: #8590a6;
+    text-align: center;
+    cursor: pointer;
+    background: none;
+    border: 1px solid #ccd8e1;
+    border-radius: 3px;
+}
+
+.Button:focus {
+    outline: 5px auto #f1f2f3;
+}
+
+.Button:active {
+    background-color: #b3b3b3;
+    color: #fff;
+}
+
+.Button:hover {
+    background-color: rgba(207, 216, 230, .1);
+}
+
+.Button:focus {
+    outline: none;
+}
+
+.Button--blue {
+    color: #0080ff;
+    border: 1px solid #0f88eb;
+}
+
+.Button--blue:hover {
+    background-color: rgba(13, 121, 209, .06);
+}
+
+.Button--blue:active {
+    background: #0080ff;
+    color: #fff;
+}
+
 /*------------------------第三方插件样式修改--------------------------*/
 
+/*---------------------------ant-design----------------------------*/
 .login .sign-flow .ant-tabs-nav-container {
     font-size: 18px;
 }
@@ -76,11 +166,21 @@ button, input, select, textarea {
     padding: 8px 10px;
 }
 
-.login .ant-tabs-nav .ant-tabs-tab:nth-child(3) {
-    margin-right: 32px;
-}
-
 .login .sign-flow .ant-tabs-top .ant-tabs-ink-bar-animated,
 .login .sign-flow .ant-tabs-bottom .ant-tabs-ink-bar-animated {
     transition: transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/*------------------------codeMirror插件-----------------------------*/
+.CodeMirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: 100% !important;
+    font-family: "PT Sans", sans-serif !important;
+    background-color: inherit !important;
+    font-size: 16px;
 }
