@@ -48,22 +48,24 @@ export default class Home extends Component {
 
     componentDidMount() {
         this.init()
+
     }
 
     componentWillUnmount() {
-        document.removeEventListener("click", () => {
+        document.removeEventListener("click", this.golbalListen) // 必须移除同一个绑定函数
+    }
+
+    init = () => {
+        document.addEventListener("click", this.golbalListen)
+    }
+
+    golbalListen = () => {
+        this.setState({
+            isFocus: false
         })
     }
 
-    init() {
-        document.addEventListener("click", () => {
-            this.setState({
-                isFocus: false
-            })
-        })
-    }
-
-    handleFocus = (e) => {
+    handleFocus = () => {
         this.setState({isFocus: true})
     }
 
@@ -88,7 +90,7 @@ export default class Home extends Component {
                                         className={`search-bar-input input-wrapper-search input-wrapper--grey ${this.state.isFocus ? "is-focus" : ""}`}
                                     >
                                         <input type="text" autoComplete="off" placeholder="搜索" className="Input"
-                                               onFocus={(e) => this.handleFocus(e)}
+                                               onFocus={() => this.handleFocus()}
                                                onClick={(e) => CommonUtils.stopBubble(e)}
                                         />
                                         <div className="Input-af1ter">

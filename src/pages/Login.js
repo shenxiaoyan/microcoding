@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import 'particles.js/particles';
 import "../style/login.css"
-import {Tabs} from 'antd';
+import {Form, Tabs} from 'antd';
 import {connect} from "react-redux";
-import {login, register} from "../reducers/user.redux";
+import {checkLogin, login, register} from "../reducers/user.redux";
 
 
 const particlesJS = window.particlesJS;
 const TabPane = Tabs.TabPane;
+const FormItem = Form.Item;
 
 @connect(
-    state => state.user,
-    {login,register}
+    store => store.user,
+    {login, register, checkLogin}
 )
 export default class Login extends Component {
 
@@ -28,8 +29,20 @@ export default class Login extends Component {
     }
 
     componentDidMount() {
+        this.props.form.validateFields();
+        this.isLogin()
         this.loadParticle()
     }
+
+    // 是否登陆 登陆了则直接跳转到首页
+    isLogin() {
+
+        this.props.checkLogin()
+        if (this.props.isLogin) {
+            this.props.history.push("/")
+        }
+    }
+
 
     // 加载 particles canvas 动画
     loadParticle() {
@@ -44,63 +57,171 @@ export default class Login extends Component {
         })
     }
 
+    // 登录
     handleLogin = () => {
+
         this.props.login(this.state)
+
     }
 
+    handleRegister = () => {
 
+        // 表单校验
+
+        this.props.register(this.state)
+    }
+
+    // 注册和登录切换
     tabChange = (key) => {
         this.setState({
             activeTab: key
         })
     }
 
+    // 检查两次密码是否相同
+    checkTwoPass = (rule, value, callback) => {
+
+        if (value !== this.state.pwd) {
+            callback("两次密码不匹配")
+        }
+        callback()
+    }
+
     render() {
+        const {getFieldDecorator, getFieldError, isFieldTouched} = this.props.form;
+
+        const emailError = isFieldTouched('email') && getFieldError('email');
+        const passwordError = isFieldTouched('password') && getFieldError('password');
+        const passwordError1 = isFieldTouched('password1') && getFieldError('password1');
+
+        const accountError = isFieldTouched('account') && getFieldError('account')
+        const passwordError2 = isFieldTouched('password2') && getFieldError('password2')
+
 
         // 注册模板
         let registerTemplate = <div className="sign-up">
-            <div className="group-inputs">
-                <div className="name input-wrapper">
-                    <input type="text" name="email" placeholder="邮箱号"
-                           onChange={v => this.handlerChange("email", v.target.value)}/>
+            <Form>
+                <div className="group-inputs">
+                    <FormItem
+                        validateStatus={emailError ? 'error' : ''}
+                        help={emailError || ''}
+                    >
+                        <div className="name input-wrapper">
+                            {getFieldDecorator('email', {
+                                rules: [
+                                    {required: true, message: '请输入邮箱'},
+                                    {
+                                        type: "email",
+                                        message: "请输入正确的邮箱号"
+                                    }
+                                ],
+                                validateFirst: true,
+                                initialValue: ""
+                            })(
+                                <input type="text" name="email" placeholder="邮箱号"
+                                       onChange={v => this.handlerChange("email", v.target.value)}/>
+                            )}
+
+                        </div>
+                    </FormItem>
+                    <FormItem
+                        validateStatus={passwordError ? 'error' : ''}
+                        help={passwordError || ''}
+                    >
+                        <div className="email input-wrapper">
+                            {getFieldDecorator('password', {
+                                rules: [
+                                    {required: true, message: '请输入密码'},
+                                    {min: 6, message: '密码至少6位'},
+                                    {max: 15, message: "密码最多15位"},
+                                    {pattern: "^[A-Za-z0-9_]{6,15}$", message: "密码只能是字母数字_组合"}
+                                ],
+                                initialValue: "",
+                                validateFirst: true
+                            })(
+                                <input type="password" name="rpassword" placeholder="密码(不少于6位)"
+                                       onChange={v => this.handlerChange("pwd", v.target.value)}/>
+                            )}
+                        </div>
+                    </FormItem>
+                    <FormItem
+                        validateStatus={passwordError1 ? 'error' : ''}
+                        help={passwordError1 || ''}
+                    >
+                        <div className="input-wrapper">
+                            {getFieldDecorator('password1', {
+                                rules: [
+                                    {required: true, message: '请再次输入密码'},
+                                    {validator: this.checkTwoPass}
+                                ],
+                                initialValue: "",
+                                validateFirst: true
+                            })(
+                                <input type="password" name="rpassword1" placeholder="确认密码"
+                                       onChange={v => this.handlerChange("pwd1", v.target.value)}/>
+                            )}
+
+                        </div>
+                    </FormItem>
                 </div>
-                <div className="email input-wrapper">
-                    <input type="password" name="rpassword" placeholder="密码(不少于6位)"
-                           onChange={v => this.handlerChange("pwd", v.target.value)}/>
+                <div className="button-wrapper command">
+                    <button className="sign-button submit" onClick={() => this.props.register(this.state)}>
+                        注册微Coding
+                    </button>
+                    <div className="spin-modal-mask">
+                    </div>
                 </div>
-                <div className="input-wrapper">
-                    <input type="password" name="rpassword1" placeholder="确认密码"
-                           onChange={v => this.handlerChange("pwd1", v.target.value)}/>
-                </div>
-            </div>
-            <div className="button-wrapper command">
-                <button className="sign-button submit" onClick={()=>this.props.register(this.state)}>
-                    注册微Coding
-                </button>
-                <div className="spin-modal-mask">
-                </div>
-            </div>
+            </Form>
+
         </div>;
 
         // 登录模板
         let loginTemplate = <div className="sign-in">
-            <div className="group-inputs">
-                <div className="email input-wrapper">
-                    <input type="text" name="account" placeholder="邮箱或昵称"
-                           onChange={v => this.handlerChange("account", v.target.value)}/>
+            <Form>
+                <div className="group-inputs">
+                    <FormItem
+                        validateStatus={accountError ? 'error' : ''}
+                        help={accountError || ''}
+                    >
+                        <div className="email input-wrapper">
+                            {getFieldDecorator('account', {
+                                rules: [
+                                    {required: true, message: '请输入邮箱/昵称'},
+                                ],
+                                initialValue: "",
+                            })(
+                                <input type="text" name="account" placeholder="邮箱或昵称"
+                                       onChange={v => this.handlerChange("account", v.target.value)}/>
+                            )}
+
+                        </div>
+                    </FormItem>
+                    <FormItem
+                        validateStatus={passwordError2 ? 'error' : ''}
+                        help={passwordError2 || ''}
+                    >
+                        <div className="input-wrapper">
+                            {getFieldDecorator('password2', {
+                                rules: [
+                                    {required: true, message: '请输入密码'},
+                                ],
+                                initialValue: "",
+                            })(
+                                <input type="password" name="lpassword" autoComplete="off"
+                                       placeholder="密码"
+                                       onChange={v => this.handlerChange("password", v.target.value)}/>
+                            )}
+
+                        </div>
+                    </FormItem>
                 </div>
-                <div className="input-wrapper">
-                    <input type="password" name="lpassword" autoComplete="off"
-                           placeholder="密码"
-                           onChange={v => this.handlerChange("password", v.target.value)}/>
+                <div className="button-wrapper command">
+                    <button className="sign-button submit"
+                            onClick={this.handleLogin}>
+                        登录
+                    </button>
                 </div>
-            </div>
-            <div className="button-wrapper command">
-                <button className="sign-button submit"
-                        onClick={this.handleLogin}>
-                    登录
-                </button>
-            </div>
+            </Form>
         </div>
 
         return (
@@ -137,3 +258,5 @@ export default class Login extends Component {
     }
 
 }
+// ant-design 表单props
+Login = Form.create({})(Login);
