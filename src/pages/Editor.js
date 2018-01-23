@@ -28,11 +28,9 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
-
         this.initEditor()
         // 滚动监听
         this.scrollListener();
-
     }
 
     initEditor() {
@@ -117,6 +115,7 @@ export default class Editor extends Component {
                 <header className="header editor-header">
                     <input type="text" placeholder="输入文章标题..." className="title-input title-input"/>
                     <div className="right-box with-margin">
+                        <div className="homePage"><Link to="/">回首页</Link></div>
                         <div className="status-text with-padding">
                             {this.props.writeStatus === 1 ? init : (this.props.writeStatus === 2 ? saving : saved)}
                         </div>

@@ -1,8 +1,10 @@
-import {host} from "../common/config";
+import {host} from "../config/config";
 import axios from "axios";
+
 
 const LOGIN_SUCESS = "LOGIN_SUCCESS"   // 登陆成功
 const IS_LOGIN = "IS_LOGIN"             // 是否登录
+const LOG_OUT = "LOG_OUT"             // 是否登录
 const ERROR_MSG = "ERROR_MSG"           // 出错
 
 const initState = {
@@ -18,7 +20,9 @@ export function user(state = initState, action) {
         case "LOGIN_SUCCESS":
             return {...state, errMsg: action.errMsg, ...action.data};
         case "IS_LOGIN":
-            return {...state, ...action.data, errMsg: ""}
+            return {...state, errMsg: "", ...action.data,}
+        case "LOG_OUT":
+            return {...state, errMsg: "", ...action.data,}
         case "ERROR_MSG":
             return {...state, errMsg: action.errMsg}
         default:
@@ -28,35 +32,40 @@ export function user(state = initState, action) {
 }
 
 function loginSuccess(data) {
+
     return {type: LOGIN_SUCESS, data: data, errMsg: ""}
 }
+
+function logOutSucess(data) {
+    return {type: LOG_OUT, data: data, errMsg: ""}
+}
+
 
 function error(msg) {
     return {type: ERROR_MSG, errMsg: msg}
 }
 
 
-export function login({account, password}) {
-
-    return async dispatch => {
-        let res = await axios.post(`${host}/login`, {
+// 登录
+export function login({account, password}, history) {
+    return dispatch => {
+        axios.post(`${host}/login`, {
             account: account,
             password: password
+        }).then(res => {
+            if (!res.data.success) {
+                dispatch(error(res.data.message))
+            } else {
+                dispatch(loginSuccess(res.data.data))
+                history.push("/")
+            }
         })
-        if (res.code !== 200) {
-            dispatch(error(res.data.message))
-        } else {
-            dispatch(loginSuccess(res.data.data))
-        }
+
     }
 }
 
 // 注册
-export function register({email, pwd, pwd1}) {
-
-    if (pwd !== pwd1) {
-        return
-    }
+export function register({email, pwd}) {
 
     return dispatch => {
         axios.post(`${host}/register`, {
@@ -70,13 +79,33 @@ export function register({email, pwd, pwd1}) {
 
 }
 
-// 是否登录
-export function checkLogin() {
-
+// 退出登录
+export function logOut() {
     return dispatch => {
+        axios.post(`${host}/signOut`, {})
+            .then(res => {
+                if (res.data.success) {
+                    dispatch(logOutSucess({isLogin: false}))
+                } else {
+                    dispatch(error(res.data.message))
+                }
+            })
+    }
+}
+
+
+// 是否登录
+export function checkLogin(history) {
+    return (dispatch, getState) => {
+        if (getState().isLogin && history) {
+            return
+        }
         axios.get(`${host}/userInfo`)
             .then(res => {
-                if (res.data.code === 200) {
+                if (res.data.success) {
+                    if (history) {
+                        history.push("/")
+                    }
                     dispatch({type: IS_LOGIN, data: {isLogin: true}})
                 }
             })

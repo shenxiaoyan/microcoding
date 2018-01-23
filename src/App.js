@@ -6,6 +6,7 @@ import Editor from "./pages/Editor";
 import Drafts from "./pages/Drafts";
 import Page404 from "./pages/404";
 import Home from "./pages/Home";
+import FancyRoute from "./component/Router";
 
 
 class App extends Component {
@@ -14,13 +15,13 @@ class App extends Component {
         return (
             <div className="App">
                 <Switch>
-                    <Route exact path={"/"} component={Home}/>
-                    <Route path={"/login"} component={Login}/>
-                    <Route path={"/editor/drafts"} component={Drafts}/>
-                    <Route path={"/editor/draft/new"} component={Editor}/>
-                    <Route path={"/editor/draft:id"} component={Editor}/>
+                    <FancyRoute exact path={"/"} component={Home}/>
+                    <FancyRoute path={"/login"} component={Login}/>
+                    <FancyRoute path={"/editor/drafts"} component={Drafts}/>
+                    <FancyRoute path={"/editor/draft/new"} component={Editor}/>
+                    <FancyRoute path={"/editor/draft:id"} component={Editor}/>
                     <Redirect exact from={"/editor"} to={"/editor/drafts"}/>
-                    <Route component={Page404}/>
+                    <FancyRoute component={Page404}/>
                 </Switch>
             </div>
         );

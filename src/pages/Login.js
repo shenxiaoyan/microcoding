@@ -12,12 +12,13 @@ const FormItem = Form.Item;
 
 @connect(
     store => store.user,
-    {login, register, checkLogin}
+    {login, register,checkLogin}
 )
 export default class Login extends Component {
 
     constructor(props) {
         super(props)
+        this.isLogin()
         this.state = {
             activeTab: '1',
             account: '',
@@ -29,18 +30,12 @@ export default class Login extends Component {
     }
 
     componentDidMount() {
-        this.props.form.validateFields();
-        this.isLogin()
         this.loadParticle()
     }
 
     // 是否登陆 登陆了则直接跳转到首页
-    isLogin() {
-
-        this.props.checkLogin()
-        if (this.props.isLogin) {
-            this.props.history.push("/")
-        }
+    isLogin = () => {
+       this.props.checkLogin(this.props.history)
     }
 
 
@@ -59,15 +54,11 @@ export default class Login extends Component {
 
     // 登录
     handleLogin = () => {
-
-        this.props.login(this.state)
-
+        this.props.login(this.state, this.props.history)
     }
 
     handleRegister = () => {
-
         // 表单校验
-
         this.props.register(this.state)
     }
 
@@ -112,10 +103,11 @@ export default class Login extends Component {
                                     {required: true, message: '请输入邮箱'},
                                     {
                                         type: "email",
-                                        message: "请输入正确的邮箱号"
+                                        message: "邮箱格式不正确"
                                     }
                                 ],
                                 validateFirst: true,
+                                validateTrigger:"onBlur",
                                 initialValue: ""
                             })(
                                 <input type="text" name="email" placeholder="邮箱号"
@@ -180,8 +172,8 @@ export default class Login extends Component {
             <Form>
                 <div className="group-inputs">
                     <FormItem
-                        validateStatus={accountError ? 'error' : ''}
-                        help={accountError || ''}
+                        validateStatus={accountError ? 'error' : (this.props.errMsg === "用户不存在" ? "error" : "" )}
+                        help={accountError || this.props.errMsg === "用户不存在" ? "用户不存在" : undefined || ''}
                     >
                         <div className="email input-wrapper">
                             {getFieldDecorator('account', {
@@ -197,8 +189,8 @@ export default class Login extends Component {
                         </div>
                     </FormItem>
                     <FormItem
-                        validateStatus={passwordError2 ? 'error' : ''}
-                        help={passwordError2 || ''}
+                        validateStatus={passwordError2 ? 'error' : (this.props.errMsg === "密码错误" ? "error" : "" )}
+                        help={passwordError2 || this.props.errMsg === "密码错误" ? "密码错误" : undefined || ''}
                     >
                         <div className="input-wrapper">
                             {getFieldDecorator('password2', {
@@ -211,7 +203,6 @@ export default class Login extends Component {
                                        placeholder="密码"
                                        onChange={v => this.handlerChange("password", v.target.value)}/>
                             )}
-
                         </div>
                     </FormItem>
                 </div>
@@ -225,7 +216,7 @@ export default class Login extends Component {
         </div>
 
         return (
-            <div>
+            <div className={`hide ${this.props.isLogin ? "" : "show"}`}>
                 <div className="index-main login">
                     <div className="index-main-body">
                         <div className="index-header">
@@ -253,7 +244,6 @@ export default class Login extends Component {
                 {/*--背景*/}
                 <div id="Particles"/>
             </div>
-
         )
     }
 

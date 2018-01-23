@@ -30,6 +30,7 @@
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "marked": "^0.3.12",
+    "nprogress": "^0.2.0",
     "object-assign": "4.1.1",
     "particles.js": "^2.0.0",
     "postcss-flexbugs-fixes": "3.2.0",

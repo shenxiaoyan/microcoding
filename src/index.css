@@ -54,6 +54,14 @@ button, input, select, textarea {
     height: 100%;
 }
 
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
 .hide-text {
     font: 0/0 a;
     color: transparent;
@@ -171,6 +179,10 @@ button, input, select, textarea {
     padding: 8px 10px;
 }
 
+.login .sign-flow .ant-tabs-nav .ant-tabs-tab:last-child {
+    margin-right: 32px;
+}
+
 .login .sign-flow .ant-tabs-top .ant-tabs-ink-bar-animated,
 .login .sign-flow .ant-tabs-bottom .ant-tabs-ink-bar-animated {
     transition: transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -185,7 +197,7 @@ button, input, select, textarea {
     margin-bottom: 0;
 }
 
-.login .ant-form-explain, .ant-form-extra{
+.login .ant-form-explain, .ant-form-extra {
     position: absolute;
     right: 8px;
     top: 0;
@@ -206,4 +218,10 @@ button, input, select, textarea {
     font-family: "PT Sans", sans-serif !important;
     background-color: inherit !important;
     font-size: 16px;
+}
+
+.CodeMirror-cursor {
+    border-left: 1px solid #c9c9c9 !important;
+    border-right: none;
+    width: 0;
 }

@@ -3,8 +3,14 @@ import {Link} from "react-router-dom";
 import "../style/home.css"
 import CommonUtils from "../utils/commonUtils";
 import {Tooltip} from "antd";
+import {connect} from "react-redux";
+import {checkLogin, logOut} from "../reducers/user.redux";
 
 // 首页
+@connect(
+    store => store.user,
+    {checkLogin, logOut}
+)
 export default class Home extends Component {
 
     slideItems = [
@@ -12,25 +18,19 @@ export default class Home extends Component {
             path: "/mine",
             icon: "icon-book-dairy-note-write-tag-mark-important-office-log-stationery-fef",
             text: "我的",
-            show: true
+            type: "login"
         },
         {
             path: "/login",
             icon: "icon-denglu",
             text: "登录注册",
-            show: true
+            type: "nologin"
         },
         {
-            path: "/editor",
+            path: "/editor/draft/new",
             icon: "icon-xiezuo",
             text: "Write ...",
-            show: true
-        },
-        {
-            path: "/logOut",
-            icon: "icon-tuichu",
-            text: "退出登录",
-            show: true
+            type: "login"
         }
     ]
 
@@ -38,24 +38,32 @@ export default class Home extends Component {
         super(props)
         this.state = {
             isFocus: false,  // 搜索框是否focus
+            isLogin: false
         }
     }
 
-
-    componentWillMount() {
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isLogin === this.state.isLogin) {
+            return
+        }
+        this.setState({
+            isLogin: nextProps.isLogin
+        })
     }
+
 
     componentDidMount() {
         this.init()
-
+        console.log(this.props)
     }
 
     componentWillUnmount() {
         document.removeEventListener("click", this.golbalListen) // 必须移除同一个绑定函数
     }
 
+    // 初始化
     init = () => {
+        this.props.checkLogin()
         document.addEventListener("click", this.golbalListen)
     }
 
@@ -65,10 +73,15 @@ export default class Home extends Component {
         })
     }
 
+    // 搜索框是否focus
     handleFocus = () => {
         this.setState({isFocus: true})
     }
 
+    // 退出登录
+    signOut() {
+        this.props.logOut()
+    }
 
     render() {
         return (
@@ -107,16 +120,43 @@ export default class Home extends Component {
                         <div className="menu">
                             <ul>
                                 {this.slideItems.map((item, i) => {
-                                    return (
-                                        <li key={i} onClick={(e) => CommonUtils.stopBubble(e)}>
-                                            <Tooltip title={item.text} placement={"left"}>
-                                                <Link to={item.path}>
-                                                    <i className={`tab-ico icon iconfont ${item.icon}`}/>
-                                                </Link>
-                                            </Tooltip>
-                                        </li>
-                                    )
+                                    if (item.type === "login" && this.props.isLogin) {
+                                        return (
+                                            <li key={i} onClick={(e) => CommonUtils.stopBubble(e)}>
+                                                <Tooltip title={item.text} placement={"left"}>
+                                                    {
+                                                        item.path ? <Link to={item.path}>
+                                                            <i className={`tab-ico icon iconfont ${item.icon}`}/>
+                                                        </Link> : <i className={`tab-ico icon iconfont ${item.icon}`}/>
+                                                    }
+
+                                                </Tooltip>
+                                            </li>
+                                        )
+                                    }
+                                    if (item.type === "nologin" && !this.props.isLogin) {
+                                        return (
+                                            <li key={i} onClick={(e) => CommonUtils.stopBubble(e)}>
+                                                <Tooltip title={item.text} placement={"left"}>
+                                                    <Link to={item.path}>
+                                                        <i className={`tab-ico icon iconfont ${item.icon}`}/>
+                                                    </Link>
+                                                </Tooltip>
+                                            </li>
+                                        )
+                                    }
+                                    return ""
                                 })}
+                                {/*退出登录比较特殊,不是一个链接*/}
+                                {
+                                    this.props.isLogin ? <li onClick={(e) => CommonUtils.stopBubble(e)}>
+                                        <Tooltip title="退出登录" placement={"left"}>
+                                            <a onClick={() => this.signOut()}>
+                                                <i className="tab-ico icon iconfont icon-tuichu"/>
+                                            </a>
+                                        </Tooltip>
+                                    </li> : ""
+                                }
                             </ul>
                         </div>
                     </div>
