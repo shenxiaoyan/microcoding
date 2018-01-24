@@ -54,7 +54,6 @@ export default class Home extends Component {
 
     componentDidMount() {
         this.init()
-        console.log(this.props)
     }
 
     componentWillUnmount() {

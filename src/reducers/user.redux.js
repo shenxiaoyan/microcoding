@@ -1,11 +1,6 @@
 import {host} from "../config/config";
 import axios from "axios";
-
-
-const LOGIN_SUCESS = "LOGIN_SUCCESS"   // 登陆成功
-const IS_LOGIN = "IS_LOGIN"             // 是否登录
-const LOG_OUT = "LOG_OUT"             // 是否登录
-const ERROR_MSG = "ERROR_MSG"           // 出错
+import * as ActionTypes from "./actionTypes";
 
 const initState = {
     errMsg: '',
@@ -33,16 +28,16 @@ export function user(state = initState, action) {
 
 function loginSuccess(data) {
 
-    return {type: LOGIN_SUCESS, data: data, errMsg: ""}
+    return {type: ActionTypes.LOGIN_SUCESS, data: data, errMsg: ""}
 }
 
 function logOutSucess(data) {
-    return {type: LOG_OUT, data: data, errMsg: ""}
+    return {type: ActionTypes.LOG_OUT, data: data, errMsg: ""}
 }
 
 
 function error(msg) {
-    return {type: ERROR_MSG, errMsg: msg}
+    return {type: ActionTypes.ERROR_MSG, errMsg: msg}
 }
 
 
@@ -106,7 +101,9 @@ export function checkLogin(history) {
                     if (history) {
                         history.push("/")
                     }
-                    dispatch({type: IS_LOGIN, data: {isLogin: true}})
+                    dispatch({type: ActionTypes.IS_LOGIN, data: {isLogin: true}})
+                } else {
+                    dispatch({type: ActionTypes.IS_LOGIN, data: {isLogin: false}})
                 }
             })
     }

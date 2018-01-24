@@ -6,19 +6,30 @@ import CodeMirror from "codemirror/lib/codemirror";
 import '../style/codemirror/codemirror.css'    // css，codeMirror必需
 import '../style/markdown.css'     // 编辑器主题
 import '../style/codemirror/make.css'            // 自定义的编辑器markdown样式
-import 'codemirror/mode/markdown/markdown'  // markdown编辑器的语法高亮
+import 'codemirror/mode/markdown/markdown'
+import {Observable} from "rxjs";
+import {connect} from "react-redux";  // markdown编辑器的语法高亮
+import {createArticle} from "../reducers/editor.redux";
+
 
 // 写作页面
+@connect(
+    store => store.editor,
+    {createArticle}
+)
 export default class Editor extends Component {
 
     // 编辑器实例
     editor = null;
 
+
     constructor(props) {
         super(props)
         this.state = {
             writeStatus: 1,               // 三种状态1.刚进入初始化 2.正在保存 3.已保存
+            title: "",
             editorValue: "",
+            previewValue: "\n",
             scrollTop: 0,
         }
     }
@@ -31,6 +42,14 @@ export default class Editor extends Component {
         this.initEditor()
         // 滚动监听
         this.scrollListener();
+        // 编辑监听
+        this.listenEdit()
+    }
+
+    handlerChange(key, val) {
+        this.setState({
+            [key]: val
+        })
     }
 
     initEditor() {
@@ -51,7 +70,7 @@ export default class Editor extends Component {
         this.editor = CodeMirror(function (elt) {
             textarea.parentNode.replaceChild(elt, textarea);
         }, {
-            value: textarea.value,
+            value: "\n",  // todo 后面redux管理
             mode: "markdown",
             autoCloseBrackets: true,
             matchBrackets: true,
@@ -64,14 +83,9 @@ export default class Editor extends Component {
         })
 
         this.setState({
-            editorValue: marked(this.editor.getValue())
+            previewValue: marked(this.editor.getValue())
         })
 
-        this.editor.on("change", () => {
-            this.setState({
-                editorValue: marked(this.editor.getValue())
-            })
-        })
     }
 
     // 编辑器和显示区域同时滚动
@@ -98,8 +112,52 @@ export default class Editor extends Component {
                 return
             }
             this_.editor.display.scroller.scrollTop = e.target.scrollTop
+        })
+    }
+
+    // 监听标题、内容变化
+    listenEdit = () => {
+
+        const {pathname} = this.props.history.location
+
+        let title = this.refs.title
+
+        // 标题栏的监听事件
+        let tiltleInput$ = Observable.fromEvent(title, 'input')
+            .pluck("target", "value")       // 拿到input的value
+            .debounceTime(1000)             // 忽略一秒之内的输入
+
+        // codemirror的change事件 转化为observable
+        let contentInput$ = Observable.fromEvent(this.editor, "change")
+        contentInput$.subscribe(v => {
 
         })
+        // 合并两个事件
+        Observable.merge(tiltleInput$, contentInput$)
+            .subscribe(v => {
+                let newValue = this.editor.getValue()
+                // 如果是编辑内容区域变化
+                if (v instanceof CodeMirror) {
+                    this.setState({
+                        editorValue: newValue,
+                        previewValue: marked(newValue)
+                    })
+                } else {
+                    this.setState({
+                        title: v
+                    })
+                }
+                // 创建页
+                if (pathname === "/editor/draft/new") {
+                    if (this.state.title !=="" || this.state.editorValue !== "") {
+                        this.props.createArticle(this.state,this.props.history)
+                    }
+                } else {
+                    //编辑页
+
+                }
+
+            })
     }
 
 
@@ -113,7 +171,7 @@ export default class Editor extends Component {
         return (
             <div className="write">
                 <header className="header editor-header">
-                    <input type="text" placeholder="输入文章标题..." className="title-input title-input"/>
+                    <input ref="title" type="text" placeholder="输入文章标题..." className="title-input title-input"/>
                     <div className="right-box with-margin">
                         <div className="homePage"><Link to="/">回首页</Link></div>
                         <div className="status-text with-padding">
@@ -131,7 +189,9 @@ export default class Editor extends Component {
                                   style={{"display": "none"}}/>
                     </div>
                     <div className="content-preview">
-                        <div className="markdown-body" dangerouslySetInnerHTML={{__html: this.state.editorValue}}/>
+                        {this.state.title === "" ? "" :
+                            <div className="markdown-body"><h1>{this.state.title}</h1></div>}
+                        <div className="markdown-body" dangerouslySetInnerHTML={{__html: this.state.previewValue}}/>
                     </div>
                 </main>
             </div>

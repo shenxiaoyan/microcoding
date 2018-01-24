@@ -9,6 +9,7 @@ nprogress.configure({
 })
 
 class FancyRoute extends React.Component {
+
     componentWillMount() {
         nprogress.start()
     }
