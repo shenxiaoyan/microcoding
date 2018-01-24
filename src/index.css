@@ -177,10 +177,12 @@ button, input, select, textarea {
 
 .login .sign-flow .ant-tabs-nav .ant-tabs-tab {
     padding: 8px 10px;
+    margin-left: 32px;
 }
 
 .login .sign-flow .ant-tabs-nav .ant-tabs-tab:last-child {
     margin-right: 32px;
+    margin-left: 0;
 }
 
 .login .sign-flow .ant-tabs-top .ant-tabs-ink-bar-animated,
