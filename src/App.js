@@ -19,7 +19,7 @@ class App extends Component {
                     <FancyRoute path={"/login"} component={Login}/>
                     <FancyRoute path={"/editor/drafts"} component={Drafts}/>
                     <FancyRoute path={"/editor/draft/new"} component={Editor}/>
-                    <FancyRoute path={"/editor/draft:id"} component={Editor}/>
+                    <FancyRoute path={"/editor/draft/:id"} component={Editor}/>
                     <Redirect exact from={"/editor"} to={"/editor/drafts"}/>
                     <FancyRoute component={Page404}/>
                 </Switch>

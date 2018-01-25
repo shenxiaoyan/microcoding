@@ -108,3 +108,11 @@ export function checkLogin(history) {
             })
     }
 }
+
+// 清空err
+export function resetErr() {
+    return dispatch => {
+        dispatch(error(""))
+    }
+}
+

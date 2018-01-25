@@ -9,29 +9,36 @@ import '../style/codemirror/make.css'            // 自定义的编辑器markdow
 import 'codemirror/mode/markdown/markdown'
 import {Observable} from "rxjs";
 import {connect} from "react-redux";  // markdown编辑器的语法高亮
-import {createArticle} from "../reducers/editor.redux";
+import {update, createArticle, getDraft} from "../reducers/editor.redux";
 
 
 // 写作页面
 @connect(
     store => store.editor,
-    {createArticle}
+    {createArticle, getDraft, update}
 )
 export default class Editor extends Component {
 
     // 编辑器实例
     editor = null;
 
-
     constructor(props) {
         super(props)
         this.state = {
             writeStatus: 1,               // 三种状态1.刚进入初始化 2.正在保存 3.已保存
             title: "",
-            editorValue: "",
-            previewValue: "\n",
+            content: "",
             scrollTop: 0,
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // props变化 更新state的状态
+        this.setState({
+            title: nextProps.title,
+            content: nextProps.content
+        });
+        this.editor.setValue(nextProps.content)
     }
 
     componentWillMount() {
@@ -39,11 +46,14 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
+
         this.initEditor()
         // 滚动监听
         this.scrollListener();
         // 编辑监听
         this.listenEdit()
+
+        this.initContent()
     }
 
     handlerChange(key, val) {
@@ -70,7 +80,7 @@ export default class Editor extends Component {
         this.editor = CodeMirror(function (elt) {
             textarea.parentNode.replaceChild(elt, textarea);
         }, {
-            value: "\n",  // todo 后面redux管理
+            value: this.state.content,  // todo 后面redux管理
             mode: "markdown",
             autoCloseBrackets: true,
             matchBrackets: true,
@@ -85,7 +95,6 @@ export default class Editor extends Component {
         this.setState({
             previewValue: marked(this.editor.getValue())
         })
-
     }
 
     // 编辑器和显示区域同时滚动
@@ -119,38 +128,31 @@ export default class Editor extends Component {
     listenEdit = () => {
 
         const {pathname} = this.props.history.location
+        const id = this.props.match.params.id
 
         let title = this.refs.title
 
         // 标题栏的监听事件
         let tiltleInput$ = Observable.fromEvent(title, 'input')
             .pluck("target", "value")       // 拿到input的value
-            .debounceTime(1000)             // 忽略一秒之内的输入
 
         // codemirror的change事件 转化为observable
         let contentInput$ = Observable.fromEvent(this.editor, "change")
-        contentInput$.subscribe(v => {
-
-        })
         // 合并两个事件
         Observable.merge(tiltleInput$, contentInput$)
+            .debounceTime(1000)
             .subscribe(v => {
-                let newValue = this.editor.getValue()
+                let newValue = v.getValue()
                 // 如果是编辑内容区域变化
                 if (v instanceof CodeMirror) {
-                    this.setState({
-                        editorValue: newValue,
-                        previewValue: marked(newValue)
-                    })
+                    this.props.update({content: newValue, articleId: id})
                 } else {
-                    this.setState({
-                        title: v
-                    })
+                    this.props.update({title: v, articleId: id})
                 }
                 // 创建页
                 if (pathname === "/editor/draft/new") {
-                    if (this.state.title !=="" || this.state.editorValue !== "") {
-                        this.props.createArticle(this.state,this.props.history)
+                    if (this.props.title !== "" || this.props.content !== "") {
+                        this.props.createArticle(this.state, this.props.history)
                     }
                 } else {
                     //编辑页
@@ -158,6 +160,15 @@ export default class Editor extends Component {
                 }
 
             })
+    }
+
+    // 如果是编辑文章页,初始化文章内容
+    initContent() {
+        const {pathname} = this.props.location
+        const id = this.props.match.params.id
+        if (pathname !== "/editor/draft/new") {
+            this.props.getDraft(id)
+        }
     }
 
 
@@ -171,7 +182,8 @@ export default class Editor extends Component {
         return (
             <div className="write">
                 <header className="header editor-header">
-                    <input ref="title" type="text" placeholder="输入文章标题..." className="title-input title-input"/>
+                    <input ref="title" type="text" placeholder="输入文章标题..." className="title-input title-input"
+                           value={this.state.title} onChange={(v) => this.handlerChange("title", v.target.value)}/>
                     <div className="right-box with-margin">
                         <div className="homePage"><Link to="/">回首页</Link></div>
                         <div className="status-text with-padding">
@@ -185,13 +197,14 @@ export default class Editor extends Component {
                 </header>
                 <main className="main">
                     <div className="editor editor-box make" id="edit">
-                        <textarea name="editor" id="editor" cols="30" rows="10" ref="editor"
+                        <textarea name="editor" id="editor" cols="30" rows="10" ref="editor" value={this.state.content}
                                   style={{"display": "none"}}/>
                     </div>
                     <div className="content-preview">
                         {this.state.title === "" ? "" :
                             <div className="markdown-body"><h1>{this.state.title}</h1></div>}
-                        <div className="markdown-body" dangerouslySetInnerHTML={{__html: this.state.previewValue}}/>
+                        <div className="markdown-body"
+                             dangerouslySetInnerHTML={{__html: marked(this.state.content)}}/>
                     </div>
                 </main>
             </div>

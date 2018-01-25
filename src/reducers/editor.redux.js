@@ -6,7 +6,8 @@ const initState = {
     errMsg: '',
     id: "",
     title: "",
-    editorValue: "",
+    content: "",
+    previewValue: "",
     writeStatus: 1,
     isLogin: false     // 是否登录
 }
@@ -17,7 +18,11 @@ export function editor(state = initState, action) {
         case "EDITOR_CHANGE":
             return {...state, errMsg: action.errMsg, ...action.data};
         case "EDITOR_TITLE_CHANGE":
-            return {...state, errMsg: action.errMsg, ...action.data}
+            return {...state, errMsg: action.errMsg, ...action.data};
+        case "DRAFT_CHANGE":
+            return {...state, errMsg: action.errMsg, ...action.data};
+        case "ERROR_MSG":
+            return {...state, errMsg: action.errMsg};
         default:
             return state
     }
@@ -30,7 +35,6 @@ function creatSuccess(data) {
 
 // 创建文章
 export function createArticle({title, editorValue}, history) {
-
     return dispatch => {
         dispatch({type: ActionTypes.EDITOR_STATE_CHANGING, writeStatus: 2, errMsg: ""})
         axios.post(`${host}/article/create`, {
@@ -44,5 +48,37 @@ export function createArticle({title, editorValue}, history) {
                 dispatch(creatSuccess(Object.assign({writeStatus: 3}, res.data.data)))
             }
         })
+    }
+}
+
+// 获取草稿箱
+export function getDraft(articleId) {
+    return dispatch => {
+        axios.get(`${host}/draft`, {
+            params: {
+                articleId: articleId
+            }
+        }).then(res => {
+            if (res.data.success) {
+                dispatch({type: ActionTypes.DRAFT_CHANGE, data: res.data.data})
+            } else {
+                dispatch({type: ActionTypes.ERROR_MSG, errMsg: res.data.message})
+            }
+        })
+    }
+}
+
+// 更新文章
+export function update(args) {
+    return dispatch => {
+        dispatch({type: ActionTypes.EDITOR_STATE_CHANGING, writeStatus: 2, errMsg: ""})
+        axios.put(`${host}/article/update`, args)
+            .then(res => {
+                if (res.data.success) {
+                    dispatch({type: ActionTypes.DRAFT_CHANGE, data: args, writeStatus: 2})
+                } else {
+                    dispatch({type: ActionTypes.ERROR_MSG, errMsg: res.data.message, writeStatus: 2})
+                }
+            })
     }
 }

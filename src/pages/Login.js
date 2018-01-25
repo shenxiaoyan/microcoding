@@ -3,7 +3,7 @@ import 'particles.js/particles';
 import "../style/login.css"
 import {Form, Tabs} from 'antd';
 import {connect} from "react-redux";
-import {checkLogin, login, register} from "../reducers/user.redux";
+import {checkLogin, login, register, resetErr} from "../reducers/user.redux";
 
 
 const particlesJS = window.particlesJS;
@@ -12,7 +12,7 @@ const FormItem = Form.Item;
 
 @connect(
     store => store.user,
-    {login, register,checkLogin}
+    {login, register, checkLogin, resetErr}
 )
 export default class Login extends Component {
 
@@ -30,12 +30,25 @@ export default class Login extends Component {
     }
 
     componentDidMount() {
+
+        document.addEventListener("click", this.initListen)
+
         this.loadParticle()
+
     }
+
+    componentWillUnmount() {
+        document.removeEventListener("click", this.initListen)
+    }
+
+    initListen = () => {
+        this.props.resetErr()
+    }
+
 
     // 是否登陆 登陆了则直接跳转到首页
     isLogin = () => {
-       this.props.checkLogin(this.props.history)
+        this.props.checkLogin(this.props.history)
     }
 
 
@@ -85,9 +98,16 @@ export default class Login extends Component {
         const passwordError = isFieldTouched('password') && getFieldError('password');
         const passwordError1 = isFieldTouched('password1') && getFieldError('password1');
 
-        const accountError = isFieldTouched('account') && getFieldError('account')
-        const passwordError2 = isFieldTouched('password2') && getFieldError('password2')
+        let accountError = isFieldTouched('account') && getFieldError('account')
+        let passwordError2 = isFieldTouched('password2') && getFieldError('password2')
 
+
+        if (this.props.errMsg === "用户名不存在") {
+            accountError = "用户不存在"
+        }
+        if (this.props.errMsg === "密码错误") {
+            passwordError2 = "密码错误"
+        }
 
         // 注册模板
         let registerTemplate = <div className="sign-up">
@@ -107,7 +127,7 @@ export default class Login extends Component {
                                     }
                                 ],
                                 validateFirst: true,
-                                validateTrigger:"onBlur",
+                                validateTrigger: "onBlur",
                                 initialValue: ""
                             })(
                                 <input type="text" name="email" placeholder="邮箱号"
@@ -172,8 +192,8 @@ export default class Login extends Component {
             <Form>
                 <div className="group-inputs">
                     <FormItem
-                        validateStatus={accountError ? 'error' : (this.props.errMsg === "用户不存在" ? "error" : "" )}
-                        help={accountError || this.props.errMsg === "用户不存在" ? "用户不存在" : undefined || ''}
+                        validateStatus={accountError ? 'error' : ""}
+                        help={accountError || ''}
                     >
                         <div className="email input-wrapper">
                             {getFieldDecorator('account', {
@@ -189,8 +209,8 @@ export default class Login extends Component {
                         </div>
                     </FormItem>
                     <FormItem
-                        validateStatus={passwordError2 ? 'error' : (this.props.errMsg === "密码错误" ? "error" : "" )}
-                        help={passwordError2 || this.props.errMsg === "密码错误" ? "密码错误" : undefined || ''}
+                        validateStatus={passwordError2 ? 'error' : ""}
+                        help={passwordError2 || ''}
                     >
                         <div className="input-wrapper">
                             {getFieldDecorator('password2', {
