@@ -9,20 +9,22 @@ const initState = {
     content: "",
     previewValue: "",
     writeStatus: 1,
-    isLogin: false     // 是否登录
+    isLogin: false,     // 是否登录
 }
 
 export function editor(state = initState, action) {
 
     switch (action.type) {
         case "EDITOR_CHANGE":
-            return {...state, errMsg: action.errMsg, ...action.data};
+            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus};
         case "EDITOR_TITLE_CHANGE":
-            return {...state, errMsg: action.errMsg, ...action.data};
+            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus};
+        case "EDITOR_TITLE_CHANGING":
+            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus};
         case "DRAFT_CHANGE":
-            return {...state, errMsg: action.errMsg, ...action.data};
+            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus, ...action.data};
         case "ERROR_MSG":
-            return {...state, errMsg: action.errMsg};
+            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus,};
         default:
             return state
     }
@@ -34,12 +36,12 @@ function creatSuccess(data) {
 
 
 // 创建文章
-export function createArticle({title, editorValue}, history) {
+export function createArticle({title, content}, history) {
     return dispatch => {
         dispatch({type: ActionTypes.EDITOR_STATE_CHANGING, writeStatus: 2, errMsg: ""})
         axios.post(`${host}/article/create`, {
             title: title,
-            content: editorValue
+            content: content
         }).then(res => {
             if (!res.data.success) {
                 dispatch({type: ActionTypes.ERROR_MSG, errMsg: res.data.message})
@@ -60,7 +62,7 @@ export function getDraft(articleId) {
             }
         }).then(res => {
             if (res.data.success) {
-                dispatch({type: ActionTypes.DRAFT_CHANGE, data: res.data.data})
+                dispatch({type: ActionTypes.DRAFT_CHANGE, data: res.data.data, writeStatus: 1})
             } else {
                 dispatch({type: ActionTypes.ERROR_MSG, errMsg: res.data.message})
             }
@@ -75,9 +77,9 @@ export function update(args) {
         axios.put(`${host}/article/update`, args)
             .then(res => {
                 if (res.data.success) {
-                    dispatch({type: ActionTypes.DRAFT_CHANGE, data: args, writeStatus: 2})
+                    dispatch({type: ActionTypes.DRAFT_CHANGE, data: args, writeStatus: 3})
                 } else {
-                    dispatch({type: ActionTypes.ERROR_MSG, errMsg: res.data.message, writeStatus: 2})
+                    dispatch({type: ActionTypes.ERROR_MSG, errMsg: res.data.message, writeStatus: 3})
                 }
             })
     }

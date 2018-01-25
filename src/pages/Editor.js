@@ -28,17 +28,30 @@ export default class Editor extends Component {
             writeStatus: 1,               // 三种状态1.刚进入初始化 2.正在保存 3.已保存
             title: "",
             content: "",
+            isInit: false,
             scrollTop: 0,
         }
     }
 
     componentWillReceiveProps(nextProps) {
+
+        if (!this.state.isInit) {
+            this.editor.setValue(nextProps.content)
+        }
+
+        if (nextProps.isInit && !this.state.isInit) {
+            this.setState({
+                isInit: true
+            });
+        }
+
         // props变化 更新state的状态
         this.setState({
             title: nextProps.title,
-            content: nextProps.content
+            content: nextProps.content,
+            writeStatus: nextProps.writeStatus
         });
-        this.editor.setValue(nextProps.content)
+        console.log(nextProps)
     }
 
     componentWillMount() {
@@ -63,6 +76,7 @@ export default class Editor extends Component {
     }
 
     initEditor() {
+        console.log(this.props)
         // markdown渲染插件初始化
         const markedRender = new marked.Renderer();   // markdown渲染 marked插件
         marked.setOptions({
@@ -77,10 +91,8 @@ export default class Editor extends Component {
         });
         // 初始化编辑器
         const textarea = this.refs.editor;
-        this.editor = CodeMirror(function (elt) {
-            textarea.parentNode.replaceChild(elt, textarea);
-        }, {
-            value: this.state.content,  // todo 后面redux管理
+        this.editor = CodeMirror.fromTextArea(textarea, {
+            // todo 后面redux管理
             mode: "markdown",
             autoCloseBrackets: true,
             matchBrackets: true,
@@ -90,10 +102,6 @@ export default class Editor extends Component {
             scrollbarStyle: "null",
             extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
 
-        })
-
-        this.setState({
-            previewValue: marked(this.editor.getValue())
         })
     }
 
@@ -142,21 +150,36 @@ export default class Editor extends Component {
         Observable.merge(tiltleInput$, contentInput$)
             .debounceTime(1000)
             .subscribe(v => {
-                let newValue = v.getValue()
-                // 如果是编辑内容区域变化
-                if (v instanceof CodeMirror) {
-                    this.props.update({content: newValue, articleId: id})
-                } else {
-                    this.props.update({title: v, articleId: id})
-                }
+
                 // 创建页
                 if (pathname === "/editor/draft/new") {
-                    if (this.props.title !== "" || this.props.content !== "") {
+                    //编辑页
+                    if (v instanceof CodeMirror) {
+                        this.setState({
+                            content: v.getValue()
+                        })
+                    } else {
+                        this.setState({
+                            title: v
+                        })
+                    }
+                    if (this.state.title !== "" || this.state.content !== "") {
                         this.props.createArticle(this.state, this.props.history)
                     }
                 } else {
                     //编辑页
-
+                    if (v instanceof CodeMirror) {
+                        let newValue = v.getValue()
+                        if (newValue === this.props.content) {
+                            return
+                        }
+                        this.props.update({content: newValue, articleId: id})
+                    } else {
+                        if (v === this.props.title) {
+                            return
+                        }
+                        this.props.update({title: v, articleId: id})
+                    }
                 }
 
             })
@@ -187,7 +210,7 @@ export default class Editor extends Component {
                     <div className="right-box with-margin">
                         <div className="homePage"><Link to="/">回首页</Link></div>
                         <div className="status-text with-padding">
-                            {this.props.writeStatus === 1 ? init : (this.props.writeStatus === 2 ? saving : saved)}
+                            {this.state.writeStatus === 1 ? init : (this.state.writeStatus === 2 ? saving : saved)}
                         </div>
                         <div className="publish">
                             <button className="Button Button--blue publish-button">发布<i
@@ -197,8 +220,8 @@ export default class Editor extends Component {
                 </header>
                 <main className="main">
                     <div className="editor editor-box make" id="edit">
-                        <textarea name="editor" id="editor" cols="30" rows="10" ref="editor" value={this.state.content}
-                                  style={{"display": "none"}}/>
+                        <textarea name="editor" id="editor" cols="30" rows="10" ref="editor"
+                                  value={this.state.content}/>
                     </div>
                     <div className="content-preview">
                         {this.state.title === "" ? "" :
