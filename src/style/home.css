@@ -7,7 +7,6 @@
 .header {
     position: relative;
     min-width: 1032px;
-    overflow: hidden;
     background: #fff;
     border-bottom: 1px solid rgba(30, 35, 42, .06);
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 34, 77, .05);

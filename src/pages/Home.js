@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import "../style/home.css"
 import CommonUtils from "../utils/commonUtils";
 import {Tooltip} from "antd";
@@ -91,9 +91,9 @@ export default class Home extends Component {
                             <img className="logo" src={"assets/image/logo1.png"} alt="logo"/>
                         </Link>
                         <nav className="header-nav">
-                            <Link to={"/"} className="header-navItem">首页</Link>
-                            <Link to={"/TODO"} className="header-navItem">Todo</Link>
-                            <Link to={"/collections"} className="header-navItem">收藏集</Link>
+                            <NavLink to={"/"} className="header-navItem" activeClassName="is-active">首页</NavLink>
+                            <NavLink to={"/collections"} className="header-navItem" activeClassName="is-active">收藏集</NavLink>
+                            <NavLink to={"/todo"} className="header-navItem" activeClassName="is-active">Todo</NavLink>
                         </nav>
                         <div className="search-bar">
                             <div className="search-bar-tool-wrapper">

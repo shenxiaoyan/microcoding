@@ -9,7 +9,7 @@ import '../style/codemirror/make.css'            // 自定义的编辑器markdow
 import 'codemirror/mode/markdown/markdown'
 import {Observable} from "rxjs";
 import {connect} from "react-redux";  // markdown编辑器的语法高亮
-import {update, createArticle, getDraft} from "../reducers/editor.redux";
+import {update, createArticle, getDraft, getDraftList} from "../reducers/editor.redux";
 
 
 // 写作页面
@@ -28,21 +28,15 @@ export default class Editor extends Component {
             writeStatus: 1,               // 三种状态1.刚进入初始化 2.正在保存 3.已保存
             title: "",
             content: "",
-            isInit: false,
             scrollTop: 0,
         }
     }
 
     componentWillReceiveProps(nextProps) {
 
-        if (!this.state.isInit) {
+        // 第一次才初始化更新codeMirror
+        if (!this.props.isInit) {
             this.editor.setValue(nextProps.content)
-        }
-
-        if (nextProps.isInit && !this.state.isInit) {
-            this.setState({
-                isInit: true
-            });
         }
 
         // props变化 更新state的状态
@@ -51,7 +45,6 @@ export default class Editor extends Component {
             content: nextProps.content,
             writeStatus: nextProps.writeStatus
         });
-        console.log(nextProps)
     }
 
     componentWillMount() {
@@ -76,7 +69,6 @@ export default class Editor extends Component {
     }
 
     initEditor() {
-        console.log(this.props)
         // markdown渲染插件初始化
         const markedRender = new marked.Renderer();   // markdown渲染 marked插件
         marked.setOptions({
@@ -137,7 +129,7 @@ export default class Editor extends Component {
 
         const {pathname} = this.props.history.location
         const id = this.props.match.params.id
-
+        let isNew = pathname === "/editor/draft/new"
         let title = this.refs.title
 
         // 标题栏的监听事件
@@ -148,12 +140,15 @@ export default class Editor extends Component {
         let contentInput$ = Observable.fromEvent(this.editor, "change")
         // 合并两个事件
         Observable.merge(tiltleInput$, contentInput$)
+            .filter(ev => this.props.isInit || isNew)
             .debounceTime(1000)
             .subscribe(v => {
-
+                // 更新编辑器状态
+                this.setState({
+                    writeStatus: 2
+                })
                 // 创建页
                 if (pathname === "/editor/draft/new") {
-                    //编辑页
                     if (v instanceof CodeMirror) {
                         this.setState({
                             content: v.getValue()
@@ -168,21 +163,19 @@ export default class Editor extends Component {
                     }
                 } else {
                     //编辑页
+                    let newValue = this.editor.getValue()
                     if (v instanceof CodeMirror) {
-                        let newValue = v.getValue()
-                        if (newValue === this.props.content) {
-                            return
-                        }
-                        this.props.update({content: newValue, articleId: id})
+                        this.props.update({content: newValue, articleId: id, title: this.state.title})
                     } else {
-                        if (v === this.props.title) {
-                            return
-                        }
-                        this.props.update({title: v, articleId: id})
+                        this.setState({
+                            content: newValue
+                        })
+                        this.props.update({title: v, articleId: id, content: newValue})
                     }
                 }
 
             })
+
     }
 
     // 如果是编辑文章页,初始化文章内容
@@ -217,6 +210,16 @@ export default class Editor extends Component {
                                 className="icon iconfont icon-xiala"/></button>
                         </div>
                     </div>
+                    <div className="select-tags">
+                        <div className="title">发表文章</div>
+                        <div className="tag-box">
+                            <div className="sub-title">标签</div>
+                            <div data-v-520c7422="" className="category-list">
+                                <div data-v-520c7422="" className="item">JavaScript</div>
+                            </div>
+                        </div>
+                        <button className="publish-btn">确定并发布</button>
+                    </div>
                 </header>
                 <main className="main">
                     <div className="editor editor-box make" id="edit">
@@ -233,5 +236,4 @@ export default class Editor extends Component {
             </div>
         )
     }
-
 }
