@@ -4,8 +4,6 @@ import * as ActionTypes from "./actionTypes";
 
 const initState = {
     errMsg: '',
-    account: "",
-    password: "",
     isLogin: false       // 只在登录页使用，其他页面使用无意义
 }
 
@@ -95,9 +93,9 @@ export function checkLogin(history) {
         if (getState().isLogin && history) {
             return
         }
-        axios.get(`${host}/userInfo`)
+        axios.get(`${host}/user/isLogin`)
             .then(res => {
-                if (res.data.success) {
+                if (res.data.data.isLogin) {
                     if (history) {
                         history.push("/")
                     }

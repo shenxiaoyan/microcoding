@@ -1,21 +1,23 @@
 import React, {Component} from 'react';
-import "../style/editor.css"
+import "./editor.css"
 import {Link} from "react-router-dom";
 import marked from "marked";
 import CodeMirror from "codemirror/lib/codemirror";
-import '../style/codemirror/codemirror.css'    // css，codeMirror必需
-import '../style/markdown.css'     // 编辑器主题
-import '../style/codemirror/make.css'            // 自定义的编辑器markdown样式
-import 'codemirror/mode/markdown/markdown'
+import '../../style/codemirror/codemirror.css'    // css，codeMirror必需
+import '../../style/markdown.css'     // 编辑器主题
+import '../../style/codemirror/make.css'            // 自定义的编辑器markdown样式
+import 'codemirror/mode/markdown/markdown'       // markdown编辑器的语法高亮
 import {Observable} from "rxjs";
-import {connect} from "react-redux";  // markdown编辑器的语法高亮
-import {update, createArticle, getDraft, getDraftList} from "../reducers/editor.redux";
+import {connect} from "react-redux";
+import * as _ from "lodash"
+import {createArticle, getDraft, searchTags, update, updateSuccess} from "../../reducers/editor.redux";
+import CommonUtils from "../../utils/commonUtils";
 
 
 // 写作页面
 @connect(
     store => store.editor,
-    {createArticle, getDraft, update}
+    {createArticle, getDraft, update, searchTags, updateSuccess}
 )
 export default class Editor extends Component {
 
@@ -29,6 +31,8 @@ export default class Editor extends Component {
             title: "",
             content: "",
             scrollTop: 0,
+            showPublish: false,
+            articleTags: []
         }
     }
 
@@ -43,7 +47,8 @@ export default class Editor extends Component {
         this.setState({
             title: nextProps.title,
             content: nextProps.content,
-            writeStatus: nextProps.writeStatus
+            writeStatus: nextProps.writeStatus,
+            articleTags: nextProps.tags === "" ? [] : nextProps.tags.split(",")
         });
     }
 
@@ -51,7 +56,12 @@ export default class Editor extends Component {
 
     }
 
+    componentWillUnmount() {
+        document.removeEventListener("click", this.globalListen)
+    }
+
     componentDidMount() {
+        document.addEventListener("click", this.globalListen)
 
         this.initEditor()
         // 滚动监听
@@ -141,7 +151,7 @@ export default class Editor extends Component {
         // 合并两个事件
         Observable.merge(tiltleInput$, contentInput$)
             .filter(ev => this.props.isInit || isNew)
-            .debounceTime(1000)
+            .debounceTime(800)
             .subscribe(v => {
                 // 更新编辑器状态
                 this.setState({
@@ -176,6 +186,19 @@ export default class Editor extends Component {
 
             })
 
+        // 监听标签变化
+        let tag = this.refs.tag
+        let tagInput$ = Observable.fromEvent(tag, "input")
+        tagInput$
+            .debounceTime(200)
+            .pluck("target", "value")
+            .subscribe(v => {
+                if (v === "") {
+                    this.props.updateSuccess({tagList: []})
+                } else {
+                    this.props.searchTags(v)
+                }
+            })
     }
 
     // 如果是编辑文章页,初始化文章内容
@@ -187,13 +210,55 @@ export default class Editor extends Component {
         }
     }
 
+    // 全局监听
+    globalListen = () => {
+        this.setState({
+            showPublish: false
+        })
+    }
+
+    // 打开发布框
+    openPublish = (e) => {
+        CommonUtils.stopBubble(e)
+        this.setState({
+            showPublish: true
+        })
+    }
+
+    // 发布文章
+    publish() {
+        const id = this.props.match.params.id
+        this.props.update({articleId: id, type: 2})
+        this.setState({
+            showPublish: false
+        })
+    }
+
+    // 选择标签
+    selectTag = (tag, type) => {
+
+        const id = this.props.match.params.id
+        if (type === 1) {
+            this.state.articleTags.push(tag)
+        } else {
+            _.remove(this.state.articleTags, function (item) {
+                return item === tag
+            })
+        }
+        const str = this.state.articleTags.join(",");
+        this.props.update({articleId: id, tags: str})
+        this.props.updateSuccess({tagList: []})
+        // 重置输入框
+        let tagInput = this.refs.tag
+        tagInput.value = ""
+    }
+
 
     render() {
 
         const init = <span>文章将会自动保存至<Link to={"/editor/drafts"}>草稿</Link></span>
         const saving = <span>保存中</span>
         const saved = <span>已保存至<Link to={"/editor/drafts"}>草稿</Link></span>
-
 
         return (
             <div className="write">
@@ -206,20 +271,45 @@ export default class Editor extends Component {
                             {this.state.writeStatus === 1 ? init : (this.state.writeStatus === 2 ? saving : saved)}
                         </div>
                         <div className="publish">
-                            <button className="Button Button--blue publish-button">发布<i
+                            <button className="Button Button--blue publish-button" onClick={(e) => this.openPublish(e)} disabled={this.props.location.pathname==="/editor/draft/new"}>
+                                发布<i
                                 className="icon iconfont icon-xiala"/></button>
                         </div>
                     </div>
-                    <div className="select-tags">
+                    <div className={`select-tags ${this.state.showPublish ? "show" : "hide"}`}
+                         onClick={e => CommonUtils.stopBubble(e)}>
                         <div className="title">发表文章</div>
                         <div className="tag-box">
                             <div className="sub-title">标签</div>
-                            <div data-v-520c7422="" className="category-list">
-                                <div data-v-520c7422="" className="item">JavaScript</div>
+                            <div
+                                className={`${this.state.articleTags.length > 0 ? "show" : "hide"} category-list `}>
+                                {
+
+                                    this.state.articleTags.map((name, index) => {
+                                        return <div className="item" key={index}
+                                                    onClick={() => this.selectTag(name, 2)}>{name}</div>
+                                    })
+                                }
+                            </div>
+                            <div className="tag-input tag-input">
+                                <input type="text" ref="tag" placeholder="搜索标签（可选填）" className="input"/>
+                                {
+                                    this.props.tagList.length > 0 ?
+                                        <ul className="suggested-tag-list">
+                                            {
+                                                this.props.tagList.map(tag => {
+                                                    return <li className="tag" key={tag.id}
+                                                               onClick={() => this.selectTag(tag.name, 1)}>{tag.name}</li>
+                                                })
+                                            }
+                                        </ul> : ""
+                                }
+
                             </div>
                         </div>
                         <button className="publish-btn">确定并发布</button>
                     </div>
+
                 </header>
                 <main className="main">
                     <div className="editor editor-box make" id="edit">

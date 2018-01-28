@@ -10,7 +10,8 @@ const initState = {
     previewValue: "",
     writeStatus: 1,
     isLogin: false,     // 是否登录
-    isInit: false       // 在编辑页 是否初始化
+    isInit: false,       // 在编辑页 是否初始化
+    tagList: []
 }
 
 export function editor(state = initState, action) {
@@ -21,7 +22,9 @@ export function editor(state = initState, action) {
         case "DRAFT_CHANGE":
             return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus, isInit: true, ...action.data};
         case "EDITOR_ERROR_MSG":
-            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus, isInit: true,};
+            return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus};
+        case "TAG_LIST":
+            return {...state, errMsg: action.errMsg, tagList: action.data}
         default:
             return state
     }
@@ -29,6 +32,10 @@ export function editor(state = initState, action) {
 
 function creatSuccess(data) {
     return {type: ActionTypes.ARTICLE_CREAT, data: data, errMsg: "", writeStatus: 3}
+}
+
+export function updateSuccess(data) {
+    return {type: ActionTypes.DRAFT_CHANGE, data: data, errMsg: "", writeStatus: 3}
 }
 
 function error(msg) {
@@ -87,10 +94,25 @@ export function update(args) {
         axios.put(`${host}/article/update`, args)
             .then(res => {
                 if (res.data.success) {
-                    dispatch({type: ActionTypes.DRAFT_CHANGE, data: args, writeStatus: 3})
+                    dispatch(updateSuccess(args))
                 } else {
                     dispatch(error(res.data.message))
                 }
             })
+    }
+}
+
+// 搜索标签关键词
+export function searchTags(name) {
+    return dispatch => {
+        axios.get(`${host}/tag/list`, {
+            params: {name: name}
+        }).then(res => {
+            if (res.data.success) {
+                dispatch({type: ActionTypes.TAG_LIST, data: res.data.data})
+            } else {
+                dispatch(error(res.data.message))
+            }
+        })
     }
 }

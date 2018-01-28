@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import 'particles.js/particles';
-import "../style/login.css"
+import "./login.css"
 import {Form, Tabs} from 'antd';
 import {connect} from "react-redux";
-import {checkLogin, login, register, resetErr} from "../reducers/user.redux";
+import {checkLogin, login, register, resetErr} from "../../reducers/user.redux";
 
 
 const particlesJS = window.particlesJS;
@@ -12,13 +12,13 @@ const FormItem = Form.Item;
 
 @connect(
     store => store.user,
-    {login, register, checkLogin, resetErr}
+    {login, register, resetErr,checkLogin}
 )
 export default class Login extends Component {
 
     constructor(props) {
         super(props)
-        this.isLogin()
+        this.props.checkLogin()
         this.state = {
             activeTab: '1',
             account: '',
@@ -43,12 +43,6 @@ export default class Login extends Component {
 
     initListen = () => {
         this.props.resetErr()
-    }
-
-
-    // 是否登陆 登陆了则直接跳转到首页
-    isLogin = () => {
-        this.props.checkLogin(this.props.history)
     }
 
 
@@ -234,9 +228,8 @@ export default class Login extends Component {
                 </div>
             </Form>
         </div>
-
         return (
-            <div className={`hide ${this.props.isLogin ? "" : "show"}`}>
+            <div className={`show ${this.props.isLogin ? "hide" : "show"}`}>
                 <div className="index-main login">
                     <div className="index-main-body">
                         <div className="index-header">
