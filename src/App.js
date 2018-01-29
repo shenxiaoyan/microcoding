@@ -6,7 +6,7 @@ import Editor from "./pages/editor/Editor";
 import Drafts from "./pages/drafts/Drafts";
 import Page404 from "./pages/404/404";
 import Home from "./pages/home/Home";
-import FancyRoute from "./component/Router";
+import FancyRoute from "./component/fancy-router/fancy-router";
 import ArticleDetail from "./pages/article-detail/ArticleDetail";
 
 

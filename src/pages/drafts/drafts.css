@@ -34,7 +34,7 @@
 /*will-change: transform;*/
 /*}*/
 
-.navbar-logo-wrapper{
+.navbar-logo-wrapper {
     width: 100%;
     position: absolute;
     top: 0;
@@ -47,18 +47,20 @@
     justify-content: center;
 }
 
-.navbar-logo{
+.navbar-logo {
     padding-left: 10px;
     display: flex;
     width: 150px;
     align-items: center;
     height: 100%;
 }
-.navbar-logo img{
-    width:140px;
+
+.navbar-logo img {
+    width: 140px;
 
 }
-.nav-title{
+
+.nav-title {
     margin: 0 auto;
     width: 660px;
     -webkit-box-orient: horizontal;
@@ -72,7 +74,7 @@
     display: flex;
 }
 
-.nav-title-wrap{
+.nav-title-wrap {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     -ms-flex-direction: row;
@@ -82,18 +84,19 @@
     align-items: center;
     display: flex;
 }
-.page-title{
+
+.page-title {
     font-weight: 700;
     color: #333;
     font-size: 16px;
     margin-right: 20px;
 }
 
-.page-title-sub{
-    color: #b3b3b3;
+.page-title-sub {
+    color: gray;
 }
 
-.navbar-functionality{
+.navbar-functionality {
     position: absolute;
     right: 0;
     top: 0;
@@ -112,33 +115,44 @@
     z-index: 1000;
 }
 
-.publish{
+.publish {
     position: relative;
     padding: 0 10px;
     cursor: pointer;
 }
 
-.writing{
+.writing {
     cursor: pointer;
 }
 
-.writing:hover{
+.writing:hover {
     text-decoration: none;
     color: #333;
 }
 
-.iconfont.icon-gengduo{
+.writing a {
+    color: #656565;
+}
+
+.writing a:hover {
+    color: #0f88eb;
+}
+
+.iconfont.icon-gengduo {
     font-size: 25px;
     cursor: pointer;
 
 }
-.menu{
+
+.navbar-functionality .menu {
     margin-left: 30px;
 }
-.menu-list{
+
+.menu-list {
     height: 100%;
 }
-.menu-item{
+
+.menu-item {
     height: 54px;
     white-space: nowrap;
     display: block;
@@ -148,20 +162,85 @@
     box-sizing: border-box;
     padding: 0 20px;
 }
-.menu-item a{
+
+.menu-item a {
     display: block;
 }
-.menu-item:first-child{
+
+.menu-item:first-child {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
-.menu-item:hover{
+.menu-item:hover {
     background: rgb(247, 248, 249);
 }
 
-.icon-xiezuo{
+.icon-xiezuo {
     font-size: 18px;
+}
+
+.Layout-main {
+    margin: 47px auto 0;
+    padding: 0;
+    width: 660px;
+    z-index: 1;
+}
+
+.Drafts-list {
+    margin-bottom: 80px;
+}
+
+.Drafts-item {
+    padding: 20px 0;
+    margin: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+    list-style: none;
+}
+
+.Drafts-link, .Drafts-title {
+    color: #333;
+    text-decoration: none;
+}
+
+.Drafts-title {
+    font-size: 16px;
+    padding: 0 0 8px;
+    font-weight: 400;
+    line-height: 1.5;
+    word-break: break-all;
+    max-height: 60px;
+    margin: 0;
+    overflow: hidden;
+}
+
+.Drafts-meta {
+    color: gray;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline;
+}
+
+.Drafts-updated {
+    position: relative;
+    cursor: pointer;
+    color: gray;
+}
+
+.Bull {
+    margin: 0 6px;
+}
+
+.Bull:before {
+    content: "\B7";
+}
+
+.Drafts-removeButton {
+    cursor: pointer;
+}
+
+.Drafts-removeButton:hover {
+    color: #333;
 }
 
 .pop-content {

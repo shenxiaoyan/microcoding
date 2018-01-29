@@ -1,6 +1,7 @@
 /*----------------全局样式-------------------*/
 * {
     box-sizing: border-box;
+    padding: 0
 }
 
 html {
@@ -14,7 +15,7 @@ html, body {
     padding: 0;
     color: #333;
     font-family: -apple-system, PingFang SC, Hiragino Sans GB, Arial, Microsoft YaHei, Helvetica Neue, sans-serif;
-    font-size: 15px;
+    font-size: 12px;
     line-height: 1.2;
     text-rendering: optimizeLegibility;
 }
@@ -52,11 +53,6 @@ button, input, select, textarea {
 
 #root {
     height: 100%;
-}
-
-a {
-    color: #555 !important;
-    text-decoration: none !important;
 }
 
 .hide {

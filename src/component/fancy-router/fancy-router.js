@@ -8,7 +8,7 @@ nprogress.configure({
     template: "<div class='bar' role='bar' style></div>"
 })
 
-class FancyRoute extends React.Component {
+export default class FancyRoute extends React.Component {
 
     componentWillMount() {
         nprogress.start()
@@ -26,4 +26,3 @@ class FancyRoute extends React.Component {
     }
 }
 
-export default FancyRoute

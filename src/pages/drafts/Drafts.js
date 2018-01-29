@@ -4,6 +4,7 @@ import {getDraftList} from "../../reducers/drafts.redux";
 import {Link} from "react-router-dom";
 import "./drafts.css"
 import {Popover} from "antd";
+import Time from "../../component/time/time"
 
 // 草稿箱页面
 @connect(
@@ -38,7 +39,7 @@ export default class Drafts extends Component {
             <div className="drafts">
                 <header className="navbar scroll-back-fixed scroll-back-fixed-active">
                     <div className="navbar-logo-wrapper">
-                        <Link to="/" className="navbar-logo" target="_blank">
+                        <Link to="/" className="navbar-logo">
                             <img src={"/assets/image/logo1.png"} alt="微Coding"/>
                         </Link>
                     </div>
@@ -64,6 +65,28 @@ export default class Drafts extends Component {
                         </div>
                     </div>
                 </header>
+                <div className="Layout-main av-card">
+                    <div className="InfiniteList Drafts-list">
+                        <ul>
+                            {
+                                this.props.draftList.map((draft, index) => {
+                                    return <li className="Drafts-item" key={index}>
+                                        <div className="Drafts-title">
+                                            <Link className="Drafts-link" to={`/editor/draft/${draft.articleId}`}>{draft.title}</Link>
+                                        </div>
+                                        <div className="Drafts-meta">
+                                            <Time className="Drafts-updated" time={draft.creatime}/>
+                                            <span className="Bull"/>
+                                            <span className="Drafts-words">共 {draft.len} 字</span>
+                                            <span className="Bull"/>
+                                            <span className="Drafts-removeButton">删除</span>
+                                        </div>
+                                    </li>
+                                })
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
         )
     }
