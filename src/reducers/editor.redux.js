@@ -24,7 +24,9 @@ export function editor(state = initState, action) {
         case "EDITOR_ERROR_MSG":
             return {...state, errMsg: action.errMsg, writeStatus: action.writeStatus};
         case "TAG_LIST":
-            return {...state, errMsg: action.errMsg, tagList: action.data}
+            return {...state, errMsg: action.errMsg, tagList: action.data};
+        case "RESET_EDITOR_INIT":
+            return {...state, isInit: false};
         default:
             return state
     }
@@ -38,10 +40,13 @@ export function updateSuccess(data) {
     return {type: ActionTypes.DRAFT_CHANGE, data: data, errMsg: "", writeStatus: 3}
 }
 
+export function resetEditorInit() {
+    return {type:ActionTypes.RESET_EDITOR_INIT}
+}
+
 function error(msg) {
     return {type: ActionTypes.EDITOR_ERROR_MSG, errMsg: msg, writeStatus: 3}
 }
-
 
 // 创建文章
 export function createArticle({title, content}, history) {

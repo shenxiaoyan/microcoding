@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Tooltip} from "antd";
 import CommonUtils from "../../utils/commonUtils";
 import "./left-nav.css"
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {logOut} from "../../reducers/user.redux";
 
@@ -22,19 +22,19 @@ export default class LeftNav extends Component {
             path: "/mine",
             icon: "icon-book-dairy-note-write-tag-mark-important-office-log-stationery-fef",
             text: "我的",
-            type: "login"
+            need: "login"
         },
         {
             path: "login",
             icon: "icon-denglu",
             text: "登录注册",
-            type: "nologin"
+            need: "nologin"
         },
         {
             path: "/editor/draft/new",
             icon: "icon-xiezuo",
             text: "Write ...",
-            type: "login"
+            need: "login"
         }
     ]
 
@@ -55,7 +55,7 @@ export default class LeftNav extends Component {
                         <div className="menu">
                             <ul>
                                 {this.slideItems.map((item, i) => {
-                                    if (item.type === "login" && this.props.isLogin) {
+                                    if (item.need === "login" && this.props.isLogin) {
                                         return (
                                             <li key={i} onClick={(e) => CommonUtils.stopBubble(e)}>
                                                 <Tooltip title={item.text} placement={"left"}>
@@ -66,7 +66,7 @@ export default class LeftNav extends Component {
                                             </li>
                                         )
                                     }
-                                    if (item.type === "nologin" && !this.props.isLogin) {
+                                    if (item.need === "nologin" && !this.props.isLogin) {
                                         return (
                                             <li key={i} onClick={(e) => CommonUtils.stopBubble(e)}>
                                                 <Tooltip title={item.text} placement={"left"}>

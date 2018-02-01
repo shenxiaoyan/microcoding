@@ -15,10 +15,6 @@ export default class Drafts extends Component {
 
     constructor() {
         super()
-        this.state = {
-            isShowPopoverMore: false
-        }
-
     }
 
     componentDidMount() {
@@ -27,8 +23,11 @@ export default class Drafts extends Component {
 
     render() {
 
-        const content = <div className="pop-content">
+        const content = <div className="">
             <ul className="menu-list">
+                <li className="menu-item">
+                    <Link to="">首页</Link>
+                </li>
                 <li className="menu-item">
                     <Link to="">我的文章</Link>
                 </li>
@@ -56,8 +55,8 @@ export default class Drafts extends Component {
                             </Link>
                         </div>
                         <div className="menu">
-                            <Popover visible={this.state.isShowPopoverMore} trigger="'click'"
-                                     placement="bottomRight" content={content}>
+                            <Popover trigger="'click'"
+                                     placement="bottomRight" content={content} overlayClassName={"pop-content"}>
                                 <div>
                                     <i className="iconfont icon-gengduo"/>
                                 </div>
@@ -72,7 +71,8 @@ export default class Drafts extends Component {
                                 this.props.draftList.map((draft, index) => {
                                     return <li className="Drafts-item" key={index}>
                                         <div className="Drafts-title">
-                                            <Link className="Drafts-link" to={`/editor/draft/${draft.articleId}`}>{draft.title}</Link>
+                                            <Link className="Drafts-link"
+                                                  to={`/editor/draft/${draft.articleId}`}>{draft.title.trim() !== "" ? draft.title : "无标题"}</Link>
                                         </div>
                                         <div className="Drafts-meta">
                                             <Time className="Drafts-updated" time={draft.creatime}/>

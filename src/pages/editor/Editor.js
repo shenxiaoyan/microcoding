@@ -10,14 +10,14 @@ import 'codemirror/mode/markdown/markdown'       // markdown编辑器的语法�
 import {Observable} from "rxjs";
 import {connect} from "react-redux";
 import * as _ from "lodash"
-import {createArticle, getDraft, searchTags, update, updateSuccess} from "../../reducers/editor.redux";
+import {createArticle, getDraft, resetEditorInit, searchTags, update, updateSuccess} from "../../reducers/editor.redux";
 import CommonUtils from "../../utils/commonUtils";
 
 
 // 写作页面
 @connect(
     store => store.editor,
-    {createArticle, getDraft, update, searchTags, updateSuccess}
+    {createArticle, getDraft, update, searchTags, updateSuccess, resetEditorInit}
 )
 export default class Editor extends Component {
 
@@ -58,6 +58,7 @@ export default class Editor extends Component {
 
     componentWillUnmount() {
         document.removeEventListener("click", this.globalListen)
+        this.props.resetEditorInit()  // 重置编辑器初始化Init
     }
 
     componentDidMount() {
@@ -94,7 +95,6 @@ export default class Editor extends Component {
         // 初始化编辑器
         const textarea = this.refs.editor;
         this.editor = CodeMirror.fromTextArea(textarea, {
-            // todo 后面redux管理
             mode: "markdown",
             autoCloseBrackets: true,
             matchBrackets: true,
@@ -271,7 +271,8 @@ export default class Editor extends Component {
                             {this.state.writeStatus === 1 ? init : (this.state.writeStatus === 2 ? saving : saved)}
                         </div>
                         <div className="publish">
-                            <button className="Button Button--blue publish-button" onClick={(e) => this.openPublish(e)} disabled={this.props.location.pathname==="/editor/draft/new"}>
+                            <button className="Button Button--blue publish-button" onClick={(e) => this.openPublish(e)}
+                                    disabled={this.props.location.pathname === "/editor/draft/new"}>
                                 发布<i
                                 className="icon iconfont icon-xiala"/></button>
                         </div>

@@ -209,6 +209,10 @@ button, input, select, textarea {
     line-height: 48px;
 }
 
+.pop-content .ant-popover-inner-content {
+    padding: 0;
+}
+
 /*------------------------codeMirror插件-----------------------------*/
 .CodeMirror {
     position: absolute;

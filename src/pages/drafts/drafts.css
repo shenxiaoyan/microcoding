@@ -145,6 +145,7 @@
 }
 
 .navbar-functionality .menu {
+    position: relative;
     margin-left: 30px;
 }
 
@@ -249,12 +250,9 @@
     font-size: 14px;
     text-align: left;
     color: rgb(51, 51, 51);
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 8px 18px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.08);
-    border-image: initial;
-    border-radius: 4px;
-    background: rgb(255, 255, 255);
-    transition: all 0.1s;
+}
+
+.pop-content .menu-list .menu-item a {
+    text-decoration: none;
+    color: #333;
 }

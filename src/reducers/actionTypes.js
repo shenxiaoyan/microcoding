@@ -10,6 +10,7 @@ export const ARTICLE_CREAT = "ARTICLE_CREAT"  // 创建文章
 export const DRAFT_CHANGE = "DRAFT_CHANGE"  // 获取一篇草稿
 export const EDITOR_ERROR_MSG = "EDITOR_ERROR_MSG"           // 出错
 export const TAG_LIST = "TAG_LIST"
+export const RESET_EDITOR_INIT = "RESET_EDITOR_INIT";
 
 // 草稿箱
 export const GET_DRAFT_LIST = "GET_DRAFT_LIST"
