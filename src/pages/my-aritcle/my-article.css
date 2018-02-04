@@ -1,0 +1,17 @@
+
+.my-articles{
+    background-color: #e9f0f5;
+    height: auto !important;
+}
+.layout-center{
+    margin: 0 auto;
+    width: 860px;
+}
+
+.my-timeLine{
+    margin-top: 80px;
+}
+
+.total-count{
+    height: 100px;
+}

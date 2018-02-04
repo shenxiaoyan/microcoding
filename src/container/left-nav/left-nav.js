@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Tooltip} from "antd";
+import {Popover, Tooltip} from "antd";
 import CommonUtils from "../../utils/commonUtils";
 import "./left-nav.css"
 import {Link} from "react-router-dom";
@@ -18,12 +18,6 @@ export default class LeftNav extends Component {
     }
 
     slideItems = [
-        {
-            path: "/mine",
-            icon: "icon-book-dairy-note-write-tag-mark-important-office-log-stationery-fef",
-            text: "我的",
-            need: "login"
-        },
         {
             path: "login",
             icon: "icon-denglu",
@@ -47,13 +41,35 @@ export default class LeftNav extends Component {
     }
 
     render() {
-        console.log(this.props)
+
+        const content =
+            <div className="menu">
+                <ul className="menu-list">
+                    <li className="menu-item">
+                        <Link to="/editor/drafts">草稿</Link>
+                    </li>
+                    <li className="menu-item">
+                        <Link to="/articles">已发布文章</Link>
+                    </li>
+                </ul>
+            </div>
+
+
         return (
             <div className="left-nav">
                 <aside className="aside">
                     <div id="slideBar" className="slide-bar">
                         <div className="menu">
                             <ul>
+                                {
+                                    this.props.isLogin ? <li onClick={(e) => CommonUtils.stopBubble(e)}>
+                                        <Popover placement="right" title="我的" content={content} trigger="hover" overlayClassName={"left-nav-pop"}>
+                                            <a>
+                                                <i className="tab-ico iconfont icon-book-dairy-note-write-tag-mark-important-office-log-stationery-fef"/>
+                                            </a>
+                                        </Popover>
+                                    </li> : ""
+                                }
                                 {this.slideItems.map((item, i) => {
                                     if (item.need === "login" && this.props.isLogin) {
                                         return (

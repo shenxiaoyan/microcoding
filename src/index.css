@@ -82,7 +82,6 @@ button, input, select, textarea {
     top: 0;
     left: 0;
     right: 0;
-    padding: 0 1.4rem;
     height: 5.334rem;
     background-color: #fff;
     border-bottom: 1px solid #ddd;
@@ -209,8 +208,26 @@ button, input, select, textarea {
     line-height: 48px;
 }
 
-.pop-content .ant-popover-inner-content {
+.pop-content .ant-popover-inner-content,
+.left-nav-pop .ant-popover-inner-content {
     padding: 0;
+}
+
+.ant-modal-header {
+    border-bottom: none !important;
+}
+
+.ant-modal-body {
+    padding: 0 !important;
+}
+
+.left-nav-pop .ant-popover-title {
+    margin: 0;
+    padding: 1px 16px 1px;
+    min-height: 10px;
+    border-bottom: 1px solid #e8e8e8;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
 }
 
 /*------------------------codeMirror插件-----------------------------*/

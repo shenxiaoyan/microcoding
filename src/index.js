@@ -9,13 +9,11 @@ import App from "./App";
 import createHistory from 'history/createBrowserHistory';
 
 const history = createHistory()
-history.listen((location, action) => {
-    console.log(action, location.pathname, location)
-});
+
 ReactDOM.render(
     (<Provider store={store}>
         <Router history={history}>
-           <App/>
+            <App/>
         </Router>
     </Provider>), document.querySelector('#root')
 );

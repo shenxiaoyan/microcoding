@@ -19,7 +19,6 @@ export default class FancyRoute extends React.Component {
     }
 
     render() {
-        console.log("router...",this.props)
         return (
             <Route {...this.props} />
         )

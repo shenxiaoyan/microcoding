@@ -11,6 +11,7 @@ const initState = {
     writeStatus: 1,
     isLogin: false,     // 是否登录
     isInit: false,       // 在编辑页 是否初始化
+    tags:"",
     tagList: []
 }
 
@@ -32,7 +33,7 @@ export function editor(state = initState, action) {
     }
 }
 
-function creatSuccess(data) {
+function createSuccess(data) {
     return {type: ActionTypes.ARTICLE_CREAT, data: data, errMsg: "", writeStatus: 3}
 }
 
@@ -59,7 +60,7 @@ export function createArticle({title, content}, history) {
                 dispatch(error(res.data.message))
             } else {
                 history.push(`/editor/draft/${res.data.data.id}`)
-                dispatch(creatSuccess(Object.assign({writeStatus: 3}, res.data.data)))
+                dispatch(createSuccess(Object.assign({writeStatus: 3}, res.data.data)))
             }
         })
     }

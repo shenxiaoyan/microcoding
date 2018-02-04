@@ -169,6 +169,7 @@ export default class Editor extends Component {
                         })
                     }
                     if (this.state.title !== "" || this.state.content !== "") {
+                        isNew = false
                         this.props.createArticle(this.state, this.props.history)
                     }
                 } else {

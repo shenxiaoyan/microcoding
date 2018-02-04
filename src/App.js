@@ -8,13 +8,10 @@ import Page404 from "./pages/404/404";
 import Home from "./pages/home/Home";
 import FancyRoute from "./component/fancy-router/fancy-router";
 import ArticleDetail from "./pages/article-detail/ArticleDetail";
+import MyArticles from "./pages/my-aritcle/my-articles";
 
 
 class App extends Component {
-
-    componentDidMount() {
-
-    }
 
     render() {
         return (
@@ -25,6 +22,7 @@ class App extends Component {
                     <FancyRoute path={"/editor/drafts"} component={Drafts}/>
                     <FancyRoute path={"/editor/draft/new"} component={Editor}/>
                     <FancyRoute path={"/editor/draft/:id"} component={Editor}/>
+                    <FancyRoute path={"/articles"} component={MyArticles}/>
                     <FancyRoute path={`/article/:id`} component={ArticleDetail}/>
                     <Redirect exact from={"/editor"} to={"/editor/drafts"}/>
                     <FancyRoute component={Page404}/>

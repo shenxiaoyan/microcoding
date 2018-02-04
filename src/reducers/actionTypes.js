@@ -11,6 +11,9 @@ export const DRAFT_CHANGE = "DRAFT_CHANGE"  // 获取一篇草稿
 export const EDITOR_ERROR_MSG = "EDITOR_ERROR_MSG"           // 出错
 export const TAG_LIST = "TAG_LIST"
 export const RESET_EDITOR_INIT = "RESET_EDITOR_INIT";
+export const DEL_ARTICLE = "DEL_ARTICLE"         // 删除文章
+export const GET_MINE_ARTICLE_LIST = "GET_MINE_ARTICLE_LIST"  // 我的文章列表
+
 
 // 草稿箱
 export const GET_DRAFT_LIST = "GET_DRAFT_LIST"

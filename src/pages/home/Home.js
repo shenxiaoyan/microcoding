@@ -16,7 +16,6 @@ export default class Home extends Component {
     }
 
     render() {
-        console.log("home", this.props)
         return (
             <div className="home">
                 <Header {...this.props}/>
