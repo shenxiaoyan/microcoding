@@ -160,6 +160,13 @@ button, input, select, textarea {
     color: #fff;
 }
 
+.empty {
+    padding: 2rem 0;
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
 /*------------------------第三方插件样式修改--------------------------*/
 
 /*---------------------------ant-design----------------------------*/

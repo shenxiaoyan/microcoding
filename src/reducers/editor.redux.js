@@ -11,7 +11,7 @@ const initState = {
     writeStatus: 1,
     isLogin: false,     // 是否登录
     isInit: false,       // 在编辑页 是否初始化
-    tags:"",
+    tags: "",
     tagList: []
 }
 
@@ -42,7 +42,7 @@ export function updateSuccess(data) {
 }
 
 export function resetEditorInit() {
-    return {type:ActionTypes.RESET_EDITOR_INIT}
+    return {type: ActionTypes.RESET_EDITOR_INIT}
 }
 
 function error(msg) {
@@ -95,12 +95,16 @@ export function getDraftList() {
 
 
 // 更新文章
-export function update(args) {
+export function update(args, history) {
     return dispatch => {
         axios.put(`${host}/article/update`, args)
             .then(res => {
                 if (res.data.success) {
                     dispatch(updateSuccess(args))
+                    // 如果是发布
+                    if (args.type && args.type === 2) {
+                        history.push(`/article/${args.id}`)
+                    }
                 } else {
                     dispatch(error(res.data.message))
                 }

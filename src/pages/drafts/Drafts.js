@@ -27,7 +27,6 @@ export default class Drafts extends Component {
     }
 
     deleteDraft = () => {
-        console.log(this.state.delId)
         if (this.state.delId !== "") {
             this.props.delDraft(this.state.delId)
             this.toggleDelModal()
@@ -43,7 +42,6 @@ export default class Drafts extends Component {
 
     render() {
 
-        console.log(this.props.draftList)
         const content = <div className="">
             <ul className="menu-list">
                 <li className="menu-item">

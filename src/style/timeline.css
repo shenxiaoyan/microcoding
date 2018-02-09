@@ -60,17 +60,6 @@ Main components
     background: #d7e4ed;
 }
 
-@media only screen and (min-width: 1170px) {
-    #cd-timeline {
-        margin-top: 3em;
-    }
-
-    #cd-timeline::before {
-        left: 50%;
-        margin-left: -2px;
-    }
-}
-
 .cd-timeline-block {
     position: relative;
     margin: 2em 0;
@@ -88,20 +77,6 @@ Main components
 
 .cd-timeline-block:last-child {
     margin-bottom: 0;
-}
-
-@media only screen and (min-width: 1170px) {
-    .cd-timeline-block {
-        margin: 4em 0;
-    }
-
-    .cd-timeline-block:first-child {
-        margin-top: 0;
-    }
-
-    .cd-timeline-block:last-child {
-        margin-bottom: 0;
-    }
 }
 
 .cd-timeline-img {
@@ -139,15 +114,6 @@ Main components
 }
 
 @media only screen and (min-width: 1170px) {
-    .cd-timeline-img {
-        width: 60px;
-        height: 60px;
-        left: 50%;
-        margin-left: -30px;
-        /* Force Hardware Acceleration in WebKit */
-        -webkit-transform: translateZ(0);
-        -webkit-backface-visibility: hidden;
-    }
 
     .cssanimations .cd-timeline-img.is-hidden {
         visibility: hidden;
@@ -228,72 +194,22 @@ a.cd-read-more:hover {
     border-right: 7px solid white;
 }
 
-@media only screen and (min-width: 768px) {
-    .cd-timeline-content h2 {
-        font-size: 20px;
-        font-size: 1.25rem;
-    }
+.cd-timeline-content h2 {
+    font-size: 20px;
+    font-size: 1.25rem;
+}
 
-    .cd-timeline-content p {
-        font-size: 16px;
-        font-size: 1rem;
-    }
+.cd-timeline-content p {
+    font-size: 16px;
+    font-size: 1rem;
+}
 
-    .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
-        font-size: 14px;
-        font-size: 0.875rem;
-    }
+.cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 @media only screen and (min-width: 1170px) {
-    .cd-timeline-content {
-        margin-left: 0;
-        padding: 1.6em;
-        width: 45%;
-    }
-
-    .cd-timeline-content::before {
-        top: 24px;
-        left: 100%;
-        border-color: transparent;
-        border-left-color: white;
-    }
-
-    .cd-timeline-content .cd-read-more {
-        float: left;
-    }
-
-    .cd-timeline-content .cd-date {
-        position: absolute;
-        width: 100%;
-        left: 122%;
-        top: 6px;
-        font-size: 16px;
-        font-size: 1rem;
-    }
-
-    .cd-timeline-block:nth-child(even) .cd-timeline-content {
-        float: right;
-    }
-
-    .cd-timeline-block:nth-child(even) .cd-timeline-content::before {
-        top: 24px;
-        left: auto;
-        right: 100%;
-        border-color: transparent;
-        border-right-color: white;
-    }
-
-    .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-read-more {
-        float: right;
-    }
-
-    .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-date {
-        left: auto;
-        right: 122%;
-        text-align: right;
-    }
-
     .cssanimations .cd-timeline-content.is-hidden {
         visibility: hidden;
     }

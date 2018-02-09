@@ -264,7 +264,7 @@ export default class Editor extends Component {
         return (
             <div className="write">
                 <header className="header editor-header">
-                    <input ref="title" type="text" placeholder="输入文章标题..." className="title-input title-input"
+                    <input ref="title" type="text" placeholder="输入文章标题..." className="title-input"
                            value={this.state.title} onChange={(v) => this.handlerChange("title", v.target.value)}/>
                     <div className="right-box with-margin">
                         <div className="homePage"><Link to="/">回首页</Link></div>
@@ -306,10 +306,9 @@ export default class Editor extends Component {
                                             }
                                         </ul> : ""
                                 }
-
                             </div>
                         </div>
-                        <button className="publish-btn">确定并发布</button>
+                        <button className="publish-btn" onClick={() => this.publish()}>确定并发布</button>
                     </div>
 
                 </header>
