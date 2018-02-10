@@ -103,7 +103,8 @@ export function update(args, history) {
                     dispatch(updateSuccess(args))
                     // 如果是发布
                     if (args.type && args.type === 2) {
-                        history.push(`/article/${args.id}`)
+                        console.log()
+                        history.push(`/article/${args.articleId}`)
                     }
                 } else {
                     dispatch(error(res.data.message))

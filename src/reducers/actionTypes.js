@@ -13,6 +13,7 @@ export const TAG_LIST = "TAG_LIST"
 export const RESET_EDITOR_INIT = "RESET_EDITOR_INIT";
 export const DEL_ARTICLE = "DEL_ARTICLE"         // 删除文章
 export const GET_MINE_ARTICLE_LIST = "GET_MINE_ARTICLE_LIST"  // 我的文章列表
+export const GET_ARTICLE_DETAIL = "GET_ARTICLE_DETAIL"   // 文章详情
 
 
 // 草稿箱

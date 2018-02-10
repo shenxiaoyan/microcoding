@@ -229,7 +229,7 @@ export default class Editor extends Component {
     // 发布文章
     publish() {
         const id = this.props.match.params.id
-        this.props.update({articleId: id, type: 2})
+        this.props.update({articleId: id, type: 2}, this.props.history)
         this.setState({
             showPublish: false
         })
