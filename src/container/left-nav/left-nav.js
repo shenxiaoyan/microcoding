@@ -14,7 +14,7 @@ import {logOut} from "../../reducers/user.redux";
 export default class LeftNav extends Component {
 
     constructor(props) {
-        super()
+        super(props)
     }
 
     slideItems = [
@@ -41,7 +41,6 @@ export default class LeftNav extends Component {
     }
 
     render() {
-
         const content =
             <div className="menu">
                 <ul className="menu-list">
@@ -61,9 +60,11 @@ export default class LeftNav extends Component {
                     <div id="slideBar" className="slide-bar">
                         <div className="menu">
                             <ul>
+                                {/*我的比较特殊,是一个Popover*/}
                                 {
                                     this.props.isLogin ? <li onClick={(e) => CommonUtils.stopBubble(e)}>
-                                        <Popover placement="right" title="我的" content={content} trigger="hover" overlayClassName={"left-nav-pop"}>
+                                        <Popover placement="right" title="我的" content={content} trigger="hover"
+                                                 overlayClassName={"left-nav-pop"}>
                                             <a>
                                                 <i className="tab-ico iconfont icon-book-dairy-note-write-tag-mark-important-office-log-stationery-fef"/>
                                             </a>

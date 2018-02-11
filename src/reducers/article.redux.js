@@ -25,7 +25,7 @@ export function getMineArticleList() {
         axios.get(`${host}/article/mine`)
             .then(res => {
                 if (res.data.success) {
-                    dispatch({type: ActionTypes.GET_MINE_ARTICLE_LIST, data: res.data.data.list})
+                    dispatch({type: ActionTypes.GET_MINE_ARTICLE_LIST, errMsg: "", data: res.data.data.list})
                 }
             })
     }
@@ -38,7 +38,7 @@ export function getArticleDetail(articleId) {
             params: {articleId: articleId}
         }).then(res => {
             if (res.data.success) {
-                dispatch({type: ActionTypes.GET_ARTICLE_DETAIL, data: res.data.data})
+                dispatch({type: ActionTypes.GET_ARTICLE_DETAIL, errMsg: "", data: res.data.data})
             }
         })
     }
